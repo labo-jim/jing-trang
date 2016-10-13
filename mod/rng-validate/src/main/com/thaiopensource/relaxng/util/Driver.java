@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class Driver {
+public class Driver {
   static private String usageKey = "usage";
 
   static public void setUsageKey(String key) {
