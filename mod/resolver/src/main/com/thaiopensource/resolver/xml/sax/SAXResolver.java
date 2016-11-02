@@ -53,7 +53,7 @@ public class SAXResolver {
     SAXInput input = new SAXInput();
     try {
       resolver.resolve(id, input);
-      if (!input.isResolved())
+      if (!input.isResolved()) 
         input.setUri(BasicResolver.resolveUri(id));
       InputSource inputSource = SAX.createInputSource(id, input);
       XMLReader xr = input.getXMLReader();

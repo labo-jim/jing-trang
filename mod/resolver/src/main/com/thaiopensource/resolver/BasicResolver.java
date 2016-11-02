@@ -48,7 +48,7 @@ public class BasicResolver implements Resolver {
       if (!uri.isAbsolute()) {
         String base = id.getBase();
         if (base != null)
-          return new URI(base).resolve(uri).toString();
+            return new URI(base).resolve(uri).toString();
       }
       return uriRef;
     }

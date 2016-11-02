@@ -12,6 +12,7 @@ import org.xml.sax.XMLReader;
 
 import javax.xml.transform.sax.SAXSource;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -51,4 +52,5 @@ class OasisCatalog extends Catalog {
                                     : new ResolverException(e));
     }
   }
+
 }

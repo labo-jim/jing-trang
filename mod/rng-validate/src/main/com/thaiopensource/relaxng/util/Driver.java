@@ -117,7 +117,8 @@ public class Driver {
     }
     if (!catalogUris.isEmpty()) {
       try {
-        properties.put(ValidateProperty.RESOLVER, new CatalogResolver(catalogUris));
+        CatalogResolver resolver = new CatalogResolver(catalogUris);
+          properties.put(ValidateProperty.RESOLVER, resolver);
       }
       catch (LinkageError e) {
         eh.print(localizer.message("resolver_not_found"));

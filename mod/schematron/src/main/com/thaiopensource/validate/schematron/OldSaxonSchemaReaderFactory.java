@@ -1,7 +1,7 @@
 package com.thaiopensource.validate.schematron;
 
-import com.icl.saxon.FeatureKeys;
-import com.icl.saxon.TransformerFactoryImpl;
+import net.sf.saxon.lib.FeatureKeys;
+import net.sf.saxon.TransformerFactoryImpl;
 
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;

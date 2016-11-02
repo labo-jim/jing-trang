@@ -8,7 +8,6 @@ public class BalancedString extends SimpleDatatypeLibrary {
 
   public BalancedString() {
     super(DATATYPE_LIBRARY, TYPE);
-    System.err.println("Loaded balanced string");
   }
 
   protected boolean isValid(String literal) {
