@@ -59,4 +59,5 @@ public class Input {
   public boolean isUriDefinitive() {
     return !isOpen() && uri != null;
   }
+  
 }

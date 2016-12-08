@@ -40,4 +40,5 @@ public class Identifier {
   public String getMediaType() {
     return "*/*";
   }
+  
 }

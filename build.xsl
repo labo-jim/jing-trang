@@ -13,9 +13,10 @@
     <property name="javacc.dir" value="lib"/>
     <property name="ant.build.javac.source" value="1.5"/>
     <property name="ant.build.javac.target" value="1.5"/>
+    <property file="dependencies-version.properties"/>
     <taskdef name="testng" classname="org.testng.TestNGAntTask">
       <classpath>
-	<pathelement location="lib/testng.jar"/>
+	<pathelement location="lib/testng${{testng-version}}.jar"/>
       </classpath>
     </taskdef>
     <target name="dummy"/>
@@ -111,7 +112,7 @@
 	    <pathelement location="{$build}/mod/{@module}/classes/main"/>
 	  </xsl:for-each>
 	  <xsl:for-each select="depends[@lib]">
-	    <pathelement location="lib/{@lib}.jar"/>
+	    <pathelement location="{concat('lib/',@lib,'${',@lib,'-version}.jar')}"/>
 	  </xsl:for-each>
 	</classpath>
       </javac>
@@ -151,10 +152,10 @@
 	    <pathelement location="{$build}/mod/{@module}/classes/main"/>
 	  </xsl:for-each>
 	  <xsl:for-each select="depends[@lib]">
-	    <pathelement location="lib/{@lib}.jar"/>
+	    <pathelement location="{concat('lib/',@lib,'${',@lib,'-version}.jar')}"/>
 	  </xsl:for-each>
 	  <xsl:if test="test[@type='testng']">
-	    <pathelement location="lib/testng.jar"/>
+	    <pathelement location="lib/testng${{testng-version}}.jar"/>
 	  </xsl:if>
 	</classpath>
       </javac>
@@ -298,13 +299,13 @@
       <classpath>
 	<pathelement location="{$build}/{$app}.jar"/>
 	<xsl:if test="@lib">
-	  <pathelement location="lib/{@lib}.jar"/>
+	  <pathelement location="{concat('lib/',@lib,'${',@lib,'-version}.jar')}"/>
 	  <xsl:if test="@lib='xalan'">
-	    <pathelement location="lib/serializer.jar"/>
+	    <pathelement location="lib/serializer${{-serializer-version}}.jar"/>
 	  </xsl:if>
 	</xsl:if>
 	<xsl:if test="$app = 'jing'">
-	  <pathelement location="lib/xercesImpl.jar"/>
+	  <pathelement location="lib/xercesImpl${{xercesImpl-version}}.jar"/>
 	</xsl:if>
       </classpath>
     </java>
@@ -325,7 +326,7 @@
       <xslt style="{$srctestdir}/{@transform}"
 	    in="{$srctest}"
 	    out="{$runtestdir}/{@name}test.xml">
-	<factory name="com.icl.saxon.TransformerFactoryImpl"/>
+	<factory name="net.sf.saxon.TransformerFactoryImpl"/>
       </xslt>
       <!-- XXX Could validate intermediate result against a schema -->
     </xsl:if>
@@ -341,7 +342,7 @@
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:attribute>
-      <factory name="com.icl.saxon.TransformerFactoryImpl"/>
+      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
       <param name="dir" expression="{$runtestdir}"/>
     </xslt>
   </target>
@@ -373,7 +374,7 @@
 	  <pathelement location="mod/{@module}/src/main"/>
 	</xsl:for-each>
 	<xsl:for-each select="../depends[@lib]">
-	  <pathelement location="lib/{@lib}.jar"/>
+	  <pathelement location="{concat('lib/',@lib,'${',@lib,'-version}.jar')}"/>
 	</xsl:for-each>
       </classpath>
     </java>
@@ -402,7 +403,7 @@
 	  <pathelement location="mod/{@module}/src/main"/>
 	</xsl:for-each>
 	<xsl:for-each select="../depends[@lib]">
-	  <pathelement location="lib/{@lib}.jar"/>
+	  <pathelement location="{concat('lib/',@lib,'${',@lib,'-version}.jar')}"/>
 	</xsl:for-each>
       </classpath>
     </testng>

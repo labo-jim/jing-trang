@@ -16,4 +16,8 @@ public class SAXInput extends Input {
   public void setXMLReader(XMLReader reader) {
     this.reader = reader;
   }
+  
+  public String toString() {
+      return super.toString()+" reader="+reader;
+  }
 }

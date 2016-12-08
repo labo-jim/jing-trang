@@ -64,9 +64,9 @@ public class CatalogResolver extends AbstractResolver {
       if (absoluteUri != null)
         resolved = isExternalIdentifier ? catalog.resolveSystem(absoluteUri) : catalog.resolveURI(absoluteUri);
       if (resolved == null) {
-        if (!isExternalIdentifier)
+        if (!isExternalIdentifier) {
           resolved = catalog.resolveURI(id.getUriReference());
-        else if (id instanceof ExternalEntityIdentifier) {
+        } else if (id instanceof ExternalEntityIdentifier) {
           ExternalEntityIdentifier xid = (ExternalEntityIdentifier)id;
           resolved = catalog.resolveEntity(xid.getEntityName(), xid.getPublicId(), xid.getUriReference());
         }
