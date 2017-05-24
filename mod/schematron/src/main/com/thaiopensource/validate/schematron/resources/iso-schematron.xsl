@@ -396,9 +396,9 @@
         </xsl:choose>
         <xsl:apply-templates mode="text"/>
       </statement>
-      <statement>
+      <!--<statement>
         <axsl:text> [PATTERN] <xsl:value-of select="$pattern"/></axsl:text>
-      </statement>
+      </statement>-->
       <!-- Chaque diagnostic devient un élément <diagnostic> -->
       <xsl:if test="$diagnostics!=''">
         <xsl:call-template name="diagnosticsSplit">
@@ -2064,9 +2064,12 @@
 				
 			<xsl:apply-templates mode="iso-sch-ske"/>
 			<!-- DPC introduce context-xpath and select-contexts variables -->
-			<xsl:if test="not($select-contexts)">
-			  <axsl:apply-templates select="{$context-xpath}" mode="M{count(../preceding-sibling::*)}"/>
-			</xsl:if>
+		  <xsl:variable name="context.no-predicates" select="replace(@context, '\[.*?\]', '')" />
+		  <xsl:if test="not(matches(tokenize($context.no-predicates, '/')[last()], '^@.+$'))">
+   			<xsl:if test="not($select-contexts)">
+   			  <axsl:apply-templates select="{$context-xpath}" mode="M{count(../preceding-sibling::*)}"/>
+   			</xsl:if>
+		  </xsl:if>
 		</axsl:template>
 	</xsl:template>
 
