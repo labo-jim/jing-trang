@@ -16,6 +16,12 @@
       | en XSLT 2 (Skeleton).                                             |
       | Source : http://www.schematron.com/tmp/iso-schematron-xslt2.zip   |
       | /!\ Format de sortie Jing + pas de résolution des include.        |
+      |                                                                   |
+      | HISTORIQUE                                                        |
+      | * [PATCH XSLT3] [20171116]                                        |
+      |   Génération XSLT 3.0 lorsque @queryBinding = "xslt3"             |
+      |   /!\ Expérimental !                                              |
+      |   Voir les commentaires "[PATCH XSLT3] [20171116]" dans le code.  |
       +===================================================================+-->
   <!-- Pas d'URIResolver dans les sources Java, l'import est problématique -->
   <!--<xsl:import href="iso_abstract_expand.xsl"/>
@@ -1041,6 +1047,26 @@
 		<!-- was xsl:call-template name="stylesheetbody"/ -->
 	</axsl:stylesheet>
 </xsl:template>
+  
+  <!-- [PATCH XSLT3] [20171116]
+       Using XSLT 3 -->
+  <xsl:template mode="iso-sch-ske" 
+    match="iso:schema[@queryBinding='xslt3' or @queryBinding ='xpath3']" 
+    priority="10">
+    <axsl:stylesheet
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+      xmlns:saxon="http://saxon.sf.net/" 
+      >
+      <xsl:apply-templates mode="iso-sch-ske" 
+        select="iso:ns" />
+      <!-- Handle the namespaces before the version attribute: reported to help SAXON -->
+      <xsl:attribute name="version">3.0</xsl:attribute>
+      
+      <xsl:apply-templates select="." mode="stylesheetbody"/>
+      <!-- was xsl:call-template name="stylesheetbody"/ -->
+    </axsl:stylesheet>
+  </xsl:template>
 
 
 <!-- Uses unknown query language binding -->
@@ -1073,7 +1099,8 @@
 	<xsl:call-template name="handle-phase"/> 
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>PROLOG</xsl:comment><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="process-prolog"/> 
-    <xsl:text>&#10;&#10;</xsl:text><xsl:comment>XSD TYPES FOR XSLT2</xsl:comment><xsl:text>&#10;</xsl:text>
+    <!-- [PATCH XSLT3] [20171116] XSLT3 support -->
+    <xsl:text>&#10;&#10;</xsl:text><xsl:comment>XSD TYPES FOR XSLT2/XSLT3</xsl:comment><xsl:text>&#10;</xsl:text>
 	<xsl:apply-templates mode="do-types"   select="xsl:import-schema"/>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>KEYS AND FUNCTIONS</xsl:comment><xsl:text>&#10;</xsl:text>
 	<xsl:apply-templates mode="do-keys"   select="xsl:key | xsl:function "/>
@@ -1145,9 +1172,10 @@
    		<axsl:template match="*" mode="schematron-get-full-path">
 			<axsl:apply-templates select="parent::*" mode="schematron-get-full-path"/>
 			<xsl:choose>
-				<xsl:when test="//iso:schema[@queryBinding='xslt2']">
+				<xsl:when test="//iso:schema[@queryBinding=('xslt2','xslt3')]">
 					<!-- XSLT2 syntax -->
-			<axsl:text>/</axsl:text>		
+				  <!-- [PATCH XSLT3] [20171116] XSLT3 syntax -->
+		  <axsl:text>/</axsl:text>		
 			<axsl:choose>
       			<axsl:when test="namespace-uri()=''"><axsl:value-of select="name()"/></axsl:when>
       			<axsl:otherwise>
@@ -1198,8 +1226,9 @@
        	 	
 		<axsl:template match="@*" mode="schematron-get-full-path">
 			<xsl:choose>
-				<xsl:when test="//iso:schema[@queryBinding='xslt2']">
+				<xsl:when test="//iso:schema[@queryBinding=('xslt2','xslt3')]">
 					<!-- XSLT2 syntax -->
+				  <!-- [PATCH XSLT3] [20171116] XSLT3 syntax -->
 			<axsl:apply-templates select="parent::*" mode="schematron-get-full-path"/>
       		<axsl:text>/</axsl:text>
 			<axsl:choose>
@@ -1716,9 +1745,10 @@
 	
 	<!-- XSL IMPORT-SCHEMA -->
 	<!-- Importing an XSD schema allows the variour type operations to be available. -->
+  <!-- [PATCH XSLT3] [20171116] XSLT3 support -->
 	<xsl:template  match="xsl:import-schema" mode="do-types" >	 
 		<xsl:choose>
-		  <xsl:when test="ancestor::iso:schema[@queryBinding='xslt2']">
+		  <xsl:when test="ancestor::iso:schema[@queryBinding=('xslt2','xslt3')]">
 		  	<xsl:copy-of select="." />
 		  </xsl:when>
 		<xsl:otherwise>
@@ -1739,7 +1769,8 @@
 	  <xsl:if test="ancestor::iso:schema[@queryBinding='xpath']">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">24</xsl:with-param></xsl:call-template></xsl:message>
        </xsl:if>
-	  <xsl:if test="ancestor::iso:schema[@queryBinding='xpath2']">
+	  <!-- [PATCH XSLT3] [20171116] XSLT3/XPATH3 support -->
+	  <xsl:if test="ancestor::iso:schema[@queryBinding=('xpath2','xpath3')]">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">25</xsl:with-param></xsl:call-template></xsl:message>
        </xsl:if>
        
@@ -2699,10 +2730,12 @@
   	<xhtml:p id="sch-message-20a">Unable to open referenced included file: </xhtml:p>
   	<xhtml:p id="sch-message-20b" />
   	<xhtml:p id="sch-message-21">Schema error: Use include to include fragments, not a whole schema</xhtml:p>
-  	<xhtml:p id="sch-message-22">Schema error: XSD schemas may only be imported if you are using the 'xslt2' query language binding</xhtml:p>
+    <!-- [PATCH XSLT3] [20171116] XSLT3 support -->
+  	<xhtml:p id="sch-message-22">Schema error: XSD schemas may only be imported if you are using the 'xslt2' or 'xslt3' query language bindings</xhtml:p>
   	<xhtml:p id="sch-message-23">Schema error: The import-schema element is not available in the ISO Schematron namespace. Use the XSLT namespace.</xhtml:p>
   	<xhtml:p id="sch-message-24">Warning: Variables should not be used with the "xpath" query language binding.</xhtml:p>
-  	<xhtml:p id="sch-message-25">Warning: Variables should not be used with the "xpath2" query language binding.</xhtml:p>
+    <!-- [PATCH XSLT3] [20171116] XSLT3/XPATH3 support -->
+    <xhtml:p id="sch-message-25">Warning: Variables should not be used with the "xpath2" or "xpath3" query language bindings.</xhtml:p>
   	<xhtml:p id="sch-message-26">Markup Error: no uri attribute in &lt;ns></xhtml:p>
   	<xhtml:p id="sch-message-27">Markup Error: no prefix attribute in &lt;ns></xhtml:p>
   	<xhtml:p id="sch-message-28">Schema implementation error: This schema has abstract patterns, yet they are supposed to be preprocessed out already</xhtml:p>
