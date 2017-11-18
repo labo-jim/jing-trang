@@ -600,22 +600,23 @@ aaa
 </invalid>
 </testCase>
 <testCase>
-<incorrect>
+<!-- TC kept for historic purposes, but invalid XPath "foo bar" can't be tested with XSLT 2.0: it raises a runtime error -->
+<correct>
 <schema xmlns="http://www.ascc.net/xml/schematron">
 <pattern name="foo">
-<rule context="foo bar">
+<rule context="foo|bar">
   <assert test="whatever">xxx</assert>
 </rule>
 </pattern>
 </schema>
-</incorrect>
+</correct>
 </testCase>
 <testCase>
 <incorrect>
 <schema xmlns="http://www.ascc.net/xml/schematron">
 <!-- pattern is missing the name attribute: should just get validation messages -->
 <pattern>
-<rule context="foo bar">
+<rule context="foo|bar">
   <assert test="whatever">xxx</assert>
 </rule>
 </pattern>

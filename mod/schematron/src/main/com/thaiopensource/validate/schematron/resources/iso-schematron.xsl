@@ -6,7 +6,8 @@
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
                 xmlns:saxon="http://saxon.sf.net/"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:xalan-node-info="http://xml.apache.org/xalan/java/org.apache.xalan.lib.NodeInfo"
                 extension-element-prefixes="exsl"
                 exclude-result-prefixes="sch iso exsl">
   
@@ -429,11 +430,28 @@
     </diagnostic>
   </xsl:template>
   
-  <!-- Gestion de la localisation pour Jing -->
+  <!-- Gestion de la localisation pour Jing
+       Dans l'ordre : saxon:* ou xalan-node-info:* ²-->
   <xsl:template name="location">
-    <axsl:attribute name="column-number" select="saxon:column-number()"/>
-    <axsl:attribute name="line-number" select="saxon:line-number()"/>
-    <axsl:attribute name="system-id" select="saxon:system-id()"/>
+    <xsl:choose>
+      <xsl:when test="function-available('saxon:column-number') and
+                      function-available('saxon:line-number') and
+                      function-available('saxon:system-id')">
+        <axsl:attribute name="column-number" select="saxon:column-number()"/>
+        <axsl:attribute name="line-number" select="saxon:line-number()"/>
+        <axsl:attribute name="system-id" select="saxon:system-id()"/>
+      </xsl:when>
+      <xsl:when test="function-available('xalan-node-info:columnNumber') and
+                      function-available('xalan-node-info:lineNumber') and
+                      function-available('xalan-node-info:systemId')">
+        <axsl:attribute name="column-number" select="xalan-node-info:columnNumber()"/>
+        <axsl:attribute name="line-number" select="xalan-node-info:lineNumber()"/>
+        <axsl:attribute name="system-id" select="xalan-node-info:systemId()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- Fallback si les fonctions saxon:* ne sont pas accessibles (utilisation de Saxon HE par exemple) -->
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
  
   

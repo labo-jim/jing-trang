@@ -14,5 +14,11 @@
                 useMode="#attach"/>
       <attach useMode="#attach"/>
     </namespace>
+    <namespace ns="http://purl.oclc.org/dsdl/schematron">
+      <validate schema="../mod/schematron/src/main/com/thaiopensource/validate/schematron/resources/iso-schematron.rnc"
+                schemaType="application/x-rnc"
+                useMode="#attach"/>
+      <attach useMode="#attach"/>
+    </namespace>
   </mode>
 </rules>

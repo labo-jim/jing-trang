@@ -1,13 +1,12 @@
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias"
-	xmlns:sch="http://www.ascc.net/xml/schematron"
-        xmlns:loc="http://www.thaiopensource.com/ns/location"
-        xmlns:err="http://www.thaiopensource.com/ns/error"
-        xmlns:xsltc="http://www.thaiopensource.com/ns/xsltc"
-        xmlns:osaxon="http://icl.com/saxon"
-        xmlns:nsaxon="http://saxon.sf.net/"
-        xmlns:xalan-node-info="http://xml.apache.org/xalan/java/org.apache.xalan.lib.NodeInfo">
+<xsl:stylesheet version="2.0"
+	              xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               	xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias"
+               	xmlns:sch="http://www.ascc.net/xml/schematron"
+                xmlns:loc="http://www.thaiopensource.com/ns/location"
+                xmlns:err="http://www.thaiopensource.com/ns/error"
+                xmlns:xsltc="http://www.thaiopensource.com/ns/xsltc"
+                xmlns:nsaxon="http://saxon.sf.net/"
+                xmlns:xalan-node-info="http://xml.apache.org/xalan/java/org.apache.xalan.lib.NodeInfo">
 
 <xsl:param name="phase" select="'#DEFAULT'"/>
 <xsl:param name="diagnose" select="false()"/>
@@ -37,7 +36,8 @@
          use="normalize-space(@id)"/>
 
 <xsl:template match="sch:schema">
-  <axsl:stylesheet version="1.0">
+  <axsl:stylesheet version="2.0">
+    <xsl:attribute name="version" use-when="system-property('xsl:vendor') != 'Saxonica'">1.0</xsl:attribute>
     <xsl:for-each select="sch:ns">
       <xsl:attribute name="{concat(@prefix,':dummy-for-xmlns')}" namespace="{@uri}"/>
     </xsl:for-each>
@@ -101,7 +101,7 @@
 	<xsl:when test="@context">
 	  <axsl:template match="{@context}" mode="M{$pattern-index}" priority="{1 + (1 div position())}"
 			 name="R{$pattern-index}.{position()}">
-	    <xsl:call-template name="location"/>
+	    <!--<xsl:call-template name="location"/>-->
 	    <xsl:apply-templates select="*" mode="assertion"/>
 	    <xsl:if test="$not-last">
 	       <axsl:apply-templates select="." mode="M{$pattern-index + 1}"/>
@@ -109,7 +109,7 @@
 	  </axsl:template>
 	  <axsl:template match="{@context}" mode="all"
 			 priority="{($npatterns + 1 - $pattern-index) + (1 div position())}">
-	    <xsl:call-template name="location"/>
+	    <!--<xsl:call-template name="location"/>-->
 	    <axsl:call-template name="R{$pattern-index}.{position()}"/>
 	    <axsl:apply-templates select="*" mode="all"/>
 	  </axsl:template>
@@ -136,7 +136,7 @@
 
 <xsl:template match="sch:report" mode="assertion">
   <axsl:if test="{@test}">
-    <xsl:call-template name="location"/>
+    <!--<xsl:call-template name="location"/>-->
     <report>
       <xsl:call-template name="assertion"/>
     </report>
@@ -145,7 +145,7 @@
 
 <xsl:template match="sch:assert" mode="assertion">
   <axsl:if test="not({@test})">
-    <xsl:call-template name="location"/>
+    <!--<xsl:call-template name="location"/>-->
     <failed-assertion>
       <xsl:call-template name="assertion"/>
     </failed-assertion>
@@ -156,13 +156,13 @@
 
 <xsl:template match="sch:rule/sch:key">
   <axsl:key match="{../@context}" name="{@name}" use="{@path}">
-    <xsl:call-template name="location"/>
+    <!--<xsl:call-template name="location"/>-->
   </axsl:key>
 </xsl:template>
 
 <xsl:template match="sch:schema/sch:key">
   <axsl:key match="{@match}" name="{@name}" use="{@path}">
-    <xsl:call-template name="location"/>
+    <!--<xsl:call-template name="location"/>-->
   </axsl:key>
 </xsl:template>
 
@@ -171,7 +171,7 @@
   <xsl:choose>
     <xsl:when test="@subject">
       <axsl:for-each select="{@subject}">
-	<xsl:call-template name="location"/>
+	<!--<xsl:call-template name="location"/>-->
         <xsl:call-template name="assertion-body"/>
       </axsl:for-each>
     </xsl:when>
@@ -222,7 +222,7 @@
   <xsl:choose>
     <xsl:when test="@path">
       <axsl:value-of select="name({@path})">
-        <xsl:call-template name="location"/>
+        <!--<xsl:call-template name="location"/>-->
       </axsl:value-of>
     </xsl:when>
     <xsl:otherwise>
@@ -233,7 +233,7 @@
 
 <xsl:template match="sch:value-of">
   <axsl:value-of select="{@select}">
-    <xsl:call-template name="location"/>
+    <!--<xsl:call-template name="location"/>-->
   </axsl:value-of>
 </xsl:template>
 
@@ -259,105 +259,57 @@
 
 <xsl:template match="*"/>
 
-<xsl:variable name="osaxon"
-              select="function-available('osaxon:lineNumber')
-                      and function-available('osaxon:systemId')"
-              xsltc:remove="yes"/>
-
-<xsl:variable name="nsaxon"
-              select="function-available('nsaxon:line-number')
-                      and function-available('nsaxon:system-id')
-                      and function-available('nsaxon:column-number')"
-              xsltc:remove="yes"/>
-
-<!-- The JDK 1.4 version of Xalan is buggy and gets an exception if we try
-     to use these extension functions, so detect this version and don't use it. -->
-<xsl:variable name="xalan"
-              xmlns:xalan="http://xml.apache.org/xalan"
-              select="function-available('xalan-node-info:columnNumber')
-                      and function-available('xalan-node-info:lineNumber')
-                      and function-available('xalan-node-info:systemId')
-                      and function-available('xalan:checkEnvironment')
-                      and not(contains(xalan:checkEnvironment()//item[@key='version.xalan2'],
-                                       'Xalan Java 2.2'))"
-              xsltc:remove="yes"/>
-
 <xsl:template name="define-location">
   <axsl:template name="location">
-    <xsl:choose xsltc:remove="yes">
-      <xsl:when test="$osaxon">
-	<axsl:attribute name="line-number">
-	  <axsl:value-of select="osaxon:lineNumber()"/>
-	</axsl:attribute>
-	<axsl:attribute name="system-id">
-	  <axsl:value-of select="osaxon:systemId()"/>
-	</axsl:attribute>
-      </xsl:when>
-      <xsl:when test="$nsaxon">
-        <axsl:attribute name="column-number">
-	  <axsl:value-of select="nsaxon:column-number()"/>
-	</axsl:attribute>
-        <axsl:attribute name="line-number">
-	  <axsl:value-of select="nsaxon:line-number()"/>
-	</axsl:attribute>
-	<axsl:attribute name="system-id">
-	  <axsl:value-of select="nsaxon:system-id()"/>
-	</axsl:attribute>
-      </xsl:when>
-      <xsl:when test="$xalan">
-	<axsl:attribute name="column-number">
-	  <axsl:value-of select="xalan-node-info:columnNumber()"/>
-	</axsl:attribute>
-        <axsl:attribute name="line-number">
-	  <axsl:value-of select="xalan-node-info:lineNumber()"/>
-	</axsl:attribute>
-        <axsl:attribute name="system-id">
-	  <axsl:value-of select="xalan-node-info:systemId()"/>
-	</axsl:attribute>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:call-template name="define-location-nsaxon"
+                       use-when="function-available('nsaxon:line-number')
+                                 and function-available('nsaxon:system-id')
+                                 and function-available('nsaxon:column-number')"
+                        xsltc:remove="yes"/>
+    <xsl:call-template name="define-location-xalan"
+                       use-when="function-available('xalan-node-info:columnNumber')
+                                 and function-available('xalan-node-info:lineNumber')
+                                 and function-available('xalan-node-info:systemId')"
+                      xsltc:remove="yes"/>
   </axsl:template>
 </xsl:template>
 
-<xsl:template name="location">
-  <xsl:choose xsltc:remove="yes">
-    <xsl:when test="$osaxon">
-      <xsl:attribute name="loc:line-number">
-	<xsl:value-of select="osaxon:lineNumber()"/>
-      </xsl:attribute>
-      <xsl:attribute name="loc:system-id">
-	<xsl:value-of select="osaxon:systemId()"/>
-      </xsl:attribute>
-    </xsl:when>
-    <xsl:when test="$nsaxon">
-      <xsl:attribute name="loc:column-number">
-	<xsl:value-of select="nsaxon:column-number()"/>
-      </xsl:attribute>
-      <xsl:attribute name="loc:line-number">
-	<xsl:value-of select="nsaxon:line-number()"/>
-      </xsl:attribute>
-      <xsl:attribute name="loc:system-id">
-	<xsl:value-of select="nsaxon:system-id()"/>
-      </xsl:attribute>
-    </xsl:when>
-    <xsl:when test="$xalan">
-      <xsl:attribute name="loc:column-number">
-	<xsl:value-of select="xalan-node-info:columnNumber()"/>
-      </xsl:attribute>
-      <xsl:attribute name="loc:line-number">
-	<xsl:value-of select="xalan-node-info:lineNumber()"/>
-      </xsl:attribute>
-      <xsl:attribute name="loc:system-id">
-	<xsl:value-of select="xalan-node-info:systemId()"/>
-      </xsl:attribute>
-    </xsl:when>
-  </xsl:choose>
+<xsl:template name="define-location-nsaxon">
+  <xsl:if test="function-available('nsaxon:line-number')
+                and function-available('nsaxon:system-id')
+                and function-available('nsaxon:column-number')">
+    <axsl:attribute name="column-number">
+      <axsl:value-of select="nsaxon:column-number()"/>
+    </axsl:attribute>
+    <axsl:attribute name="line-number">
+      <axsl:value-of select="nsaxon:line-number()"/>
+    </axsl:attribute>
+    <axsl:attribute name="system-id">
+      <axsl:value-of select="nsaxon:system-id()"/>
+    </axsl:attribute>
+  </xsl:if>
+</xsl:template>
+  
+<xsl:template name="define-location-xalan">
+  <xsl:if test="function-available('xalan-node-info:columnNumber')
+                and function-available('xalan-node-info:lineNumber')
+                and function-available('xalan-node-info:systemId')">
+    <axsl:attribute name="column-number">
+      <axsl:value-of select="xalan-node-info:columnNumber()"/>
+    </axsl:attribute>
+    <axsl:attribute name="line-number">
+      <axsl:value-of select="xalan-node-info:lineNumber()"/>
+    </axsl:attribute>
+    <axsl:attribute name="system-id">
+      <axsl:value-of select="xalan-node-info:systemId()"/>
+    </axsl:attribute>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="sch:schema" mode="check">
   <xsl:if test="@defaultPhase and not(key('phase',normalize-space(@defaultPhase)))">
     <err:error message="default_phase_missing" arg="{normalize-space(@defaultPhase)}">
-      <xsl:call-template name="location"/>
+      <!--<xsl:call-template name="location"/>-->
     </err:error>
   </xsl:if>
   <xsl:if test="normalize-space($phase) != '#DEFAULT'
@@ -371,7 +323,7 @@
 <xsl:template match="sch:active" mode="check">
   <xsl:if test="not(key('pattern', normalize-space(@pattern)))">
     <err:error message="active_missing" arg="{normalize-space(@pattern)}">
-      <xsl:call-template name="location"/>
+      <!--<xsl:call-template name="location"/>-->
     </err:error>
   </xsl:if>
 </xsl:template>
@@ -380,12 +332,12 @@
   <xsl:variable name="r" select="key('rule', normalize-space(@rule))"/>
   <xsl:if test="not($r)">
     <err:error message="extends_missing" arg="{normalize-space(@rule)}">
-      <xsl:call-template name="location"/>
+      <!--<xsl:call-template name="location"/>-->
     </err:error>
   </xsl:if>
   <xsl:if test="$r/@context">
     <err:error message="extends_concrete" arg="{normalize-space(@rule)}">
-      <xsl:call-template name="location"/>
+      <!--<xsl:call-template name="location"/>-->
     </err:error>
   </xsl:if>
   <xsl:apply-templates mode="check-cycles" select="$r">
@@ -419,14 +371,14 @@
 <xsl:template match="*" mode="check"/>
 
 <xsl:template mode="check-cycles" match="sch:rule">
-  <xsl:param name="nodes" select="/.."/>
+  <xsl:param name="nodes" select="./.."/>
   <xsl:param name="node-to-check"/>
   <xsl:variable name="nodes-or-self" select="$nodes|."/>
   <xsl:choose>
     <xsl:when test="count($nodes) = count($nodes-or-self)">
       <xsl:for-each select="$node-to-check">
         <err:error message="extends_cycle" arg="{normalize-space(@rule)}">
-          <xsl:call-template name="location"/>
+          <!--<xsl:call-template name="location"/>-->
         </err:error>
       </xsl:for-each>
     </xsl:when>

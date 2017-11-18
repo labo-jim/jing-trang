@@ -18,7 +18,8 @@
    <target name="mod.catalog.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main">
       <mkdir dir="${build.dir}/mod/catalog/classes/main"/>
-      <javac destdir="${build.dir}/mod/catalog/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/catalog/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/catalog/src/main"/>
@@ -55,7 +56,8 @@
       <jar jarfile="${build.dir}/catalog.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/catalog/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -97,7 +99,8 @@
    <target name="mod.convert-from-dtd.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.dtd-parse.compile-main,mod.rng-schema.compile-main">
       <mkdir dir="${build.dir}/mod/convert-from-dtd/classes/main"/>
-      <javac destdir="${build.dir}/mod/convert-from-dtd/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/convert-from-dtd/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/convert-from-dtd/src/main"/>
@@ -117,11 +120,13 @@
            depends="mod.convert-from-dtd.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.dtd-parse.compile-test,mod.rng-schema.compile-test">
       <mkdir dir="${build.dir}/mod/convert-from-dtd/classes/test"/>
    </target>
-   <target name="mod.convert-from-dtd.jar" depends="mod.convert-from-dtd.compile-main">
+   <target name="mod.convert-from-dtd.jar"
+           depends="mod.convert-from-dtd.compile-main">
       <jar jarfile="${build.dir}/convert-from-dtd.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/convert-from-dtd/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
@@ -144,7 +149,8 @@
    <target name="mod.convert-from-xml.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.infer.compile-main,mod.datatype.compile-main,mod.rng-schema.compile-main">
       <mkdir dir="${build.dir}/mod/convert-from-xml/classes/main"/>
-      <javac destdir="${build.dir}/mod/convert-from-xml/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/convert-from-xml/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/convert-from-xml/src/main"/>
@@ -165,14 +171,17 @@
            depends="mod.convert-from-xml.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.infer.compile-test,mod.datatype.compile-test,mod.rng-schema.compile-test">
       <mkdir dir="${build.dir}/mod/convert-from-xml/classes/test"/>
    </target>
-   <target name="mod.convert-from-xml.jar" depends="mod.convert-from-xml.compile-main">
+   <target name="mod.convert-from-xml.jar"
+           depends="mod.convert-from-xml.compile-main">
       <jar jarfile="${build.dir}/convert-from-xml.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/convert-from-xml/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/infer/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-schema/classes/main"
@@ -194,7 +203,8 @@
    <target name="mod.convert-to-dtd.compile-main"
            depends="init,mod.util.compile-main,mod.rng-schema.compile-main">
       <mkdir dir="${build.dir}/mod/convert-to-dtd/classes/main"/>
-      <javac destdir="${build.dir}/mod/convert-to-dtd/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/convert-to-dtd/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/convert-to-dtd/src/main"/>
@@ -216,7 +226,8 @@
       <jar jarfile="${build.dir}/convert-to-dtd.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/convert-to-dtd/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-schema/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -233,7 +244,8 @@
    <target name="mod.convert-to-xsd.compile-main"
            depends="init,mod.util.compile-main,mod.datatype.compile-main,mod.rng-schema.compile-main">
       <mkdir dir="${build.dir}/mod/convert-to-xsd/classes/main"/>
-      <javac destdir="${build.dir}/mod/convert-to-xsd/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/convert-to-xsd/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/convert-to-xsd/src/main"/>
@@ -256,7 +268,8 @@
       <jar jarfile="${build.dir}/convert-to-xsd.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/convert-to-xsd/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-schema/classes/main"
@@ -271,7 +284,8 @@
          <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
       </zip>
    </target>
-   <target name="mod.convert-to-xsd.test" depends="dummy,mod.convert-to-xsd.test-toxsd"/>
+   <target name="mod.convert-to-xsd.test"
+           depends="dummy,mod.convert-to-xsd.test-toxsd"/>
    <target name="mod.convert-to-xsd.test-toxsd"
            depends="mod.convert-to-xsd.compile-test,mod.trang.jar,mod.convert-to-xsd.split-toxsd">
       <java classname="com.thaiopensource.relaxng.translate.test.CompactTestDriver"
@@ -288,7 +302,8 @@
    <target name="mod.convert-to-xsd.split-toxsd"
            depends="mod.convert-to-xsd.uptodate-split-toxsd,jing-jar"
            unless="mod.convert-to-xsd.uptodate-split-toxsd">
-      <jing rngfile="trang/test/toxsdtest.rnc" file="mod/convert-to-xsd/test/toxsdtest.xml"
+      <jing rngfile="trang/test/toxsdtest.rnc"
+            file="mod/convert-to-xsd/test/toxsdtest.xml"
             compactsyntax="true"/>
       <delete dir="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
       <mkdir dir="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
@@ -307,7 +322,8 @@
    <target name="mod.convert-to-xsd.services"/>
    <target name="mod.datatype.compile-main" depends="init,mod.util.compile-main">
       <mkdir dir="${build.dir}/mod/datatype/classes/main"/>
-      <javac destdir="${build.dir}/mod/datatype/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/datatype/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/datatype/src/main"/>
@@ -328,7 +344,8 @@
       <jar jarfile="${build.dir}/datatype.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.datatype.srczip" depends="init">
@@ -342,7 +359,8 @@
    <target name="mod.dtd-parse.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main">
       <mkdir dir="${build.dir}/mod/dtd-parse/classes/main"/>
-      <javac destdir="${build.dir}/mod/dtd-parse/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/dtd-parse/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/dtd-parse/src/main"/>
@@ -364,7 +382,8 @@
       <jar jarfile="${build.dir}/dtd-parse.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -381,7 +400,8 @@
    <target name="mod.dtdinst.compile-main"
            depends="init,mod.util.compile-main,mod.dtd-parse.compile-main">
       <mkdir dir="${build.dir}/mod/dtdinst/classes/main"/>
-      <javac destdir="${build.dir}/mod/dtdinst/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/dtdinst/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/dtdinst/src/main"/>
@@ -421,7 +441,8 @@
          </manifest>
          <fileset dir="${build.dir}/mod/dtdinst/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -436,7 +457,9 @@
    <target name="mod.dtdinst.test" depends="dummy,mod.dtdinst.test-main"/>
    <target name="mod.dtdinst.test-main" depends="mod.dtdinst.compile-test">
       <mkdir dir="${build.dir}/mod/dtdinst/test-main"/>
-      <java classname="com.thaiopensource.xml.dtd.test.Driver" fork="yes" failonerror="yes">
+      <java classname="com.thaiopensource.xml.dtd.test.Driver"
+            fork="yes"
+            failonerror="yes">
          <arg value="mod/dtdinst/test"/>
          <arg value="${build.dir}/mod/dtdinst/test-main"/>
          <classpath>
@@ -459,7 +482,8 @@
    <target name="mod.infer.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.regex.compile-main">
       <mkdir dir="${build.dir}/mod/infer/classes/main"/>
-      <javac destdir="${build.dir}/mod/infer/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/infer/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/infer/src/main"/>
@@ -501,15 +525,18 @@
    </target>
    <target name="mod.infer.jar" depends="mod.infer.compile-main">
       <jar jarfile="${build.dir}/infer.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/infer/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.infer.srczip" depends="init,mod.regex.gen">
@@ -564,7 +591,8 @@
    <target name="mod.jaxp.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main">
       <mkdir dir="${build.dir}/mod/jaxp/classes/main"/>
-      <javac destdir="${build.dir}/mod/jaxp/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/jaxp/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/jaxp/src/main"/>
@@ -584,8 +612,10 @@
    </target>
    <target name="mod.jaxp.jar" depends="mod.jaxp.compile-main">
       <jar jarfile="${build.dir}/jaxp.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/jaxp/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -625,6 +655,7 @@
             <provider classname="com.thaiopensource.relaxng.jarv.VerifierFactoryLoaderImpl"/>
          </service>
          <service type="com.thaiopensource.validate.SchemaReaderFactory">
+            <provider classname="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory"/>
             <provider classname="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory"/>
             <provider classname="com.thaiopensource.validate.schematron.OldSaxonSchemaReaderFactory"/>
             <provider classname="com.thaiopensource.validate.schematron.XalanSchemaReaderFactory"/>
@@ -640,12 +671,14 @@
             <provider classname="com.thaiopensource.validate.picl.PiclSchemaReceiverFactory"/>
             <provider classname="com.thaiopensource.validate.auto.SchemaReaderLoaderSchemaReceiverFactory"/>
          </service>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/catalog/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
@@ -654,16 +687,20 @@
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/pattern/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/jaxp/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-jaxp/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-validate/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/nvdl/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/nvdl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/schematron/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/xerces/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/picl/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xerces/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/picl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-jarv/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/validate/classes/main"
@@ -698,7 +735,8 @@
    <target name="mod.nvdl.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
       <mkdir dir="${build.dir}/mod/nvdl/classes/main"/>
-      <javac destdir="${build.dir}/mod/nvdl/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/nvdl/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/nvdl/src/main"/>
@@ -720,8 +758,10 @@
    </target>
    <target name="mod.nvdl.jar" depends="mod.nvdl.compile-main">
       <jar jarfile="${build.dir}/nvdl.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/nvdl/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/nvdl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/validate/classes/main"
@@ -743,7 +783,8 @@
            depends="dummy,mod.nvdl.test-mns,mod.nvdl.test-nrl,mod.nvdl.test-nvdl"/>
    <target name="mod.nvdl.test-mns"
            depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-mns">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/nvdl/test-mns/out.log"/>
          <arg value="${build.dir}/mod/nvdl/test-mns"/>
@@ -753,12 +794,14 @@
          </classpath>
       </java>
    </target>
-   <target name="mod.nvdl.split-mns" depends="mod.nvdl.uptodate-split-mns,jing-jar"
+   <target name="mod.nvdl.split-mns"
+           depends="mod.nvdl.uptodate-split-mns,jing-jar"
            unless="mod.nvdl.uptodate-split-mns">
       <jing rngfile="test/mnstest.rng" file="mod/nvdl/test/mnstest.xml"/>
       <delete dir="${build.dir}/mod/nvdl/test-mns"/>
       <mkdir dir="${build.dir}/mod/nvdl/test-mns"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/nvdl/test-mns/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-mns/stamp"
             in="mod/nvdl/test/mnstest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/nvdl/test-mns"/>
@@ -771,7 +814,8 @@
    </target>
    <target name="mod.nvdl.test-nrl"
            depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-nrl">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/nvdl/test-nrl/out.log"/>
          <arg value="${build.dir}/mod/nvdl/test-nrl"/>
@@ -781,12 +825,14 @@
          </classpath>
       </java>
    </target>
-   <target name="mod.nvdl.split-nrl" depends="mod.nvdl.uptodate-split-nrl,jing-jar"
+   <target name="mod.nvdl.split-nrl"
+           depends="mod.nvdl.uptodate-split-nrl,jing-jar"
            unless="mod.nvdl.uptodate-split-nrl">
       <jing rngfile="test/nrltest.rng" file="mod/nvdl/test/nrltest.xml"/>
       <delete dir="${build.dir}/mod/nvdl/test-nrl"/>
       <mkdir dir="${build.dir}/mod/nvdl/test-nrl"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/nvdl/test-nrl/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-nrl/stamp"
             in="mod/nvdl/test/nrltest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/nvdl/test-nrl"/>
@@ -799,7 +845,8 @@
    </target>
    <target name="mod.nvdl.test-nvdl"
            depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-nvdl">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/nvdl/test-nvdl/out.log"/>
          <arg value="${build.dir}/mod/nvdl/test-nvdl"/>
@@ -809,12 +856,14 @@
          </classpath>
       </java>
    </target>
-   <target name="mod.nvdl.split-nvdl" depends="mod.nvdl.uptodate-split-nvdl,jing-jar"
+   <target name="mod.nvdl.split-nvdl"
+           depends="mod.nvdl.uptodate-split-nvdl,jing-jar"
            unless="mod.nvdl.uptodate-split-nvdl">
       <jing rngfile="mod/nvdl/test/nvdltest.rng" file="mod/nvdl/test/nvdltest.xml"/>
       <delete dir="${build.dir}/mod/nvdl/test-nvdl"/>
       <mkdir dir="${build.dir}/mod/nvdl/test-nvdl"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/nvdl/test-nvdl/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-nvdl/stamp"
             in="mod/nvdl/test/nvdltest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/nvdl/test-nvdl"/>
@@ -843,7 +892,8 @@
    <target name="mod.pattern.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main">
       <mkdir dir="${build.dir}/mod/pattern/classes/main"/>
-      <javac destdir="${build.dir}/mod/pattern/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/pattern/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/pattern/src/main"/>
@@ -884,7 +934,8 @@
       <jar jarfile="${build.dir}/pattern.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/pattern/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
@@ -940,7 +991,8 @@
    <target name="mod.picl.compile-main"
            depends="init,mod.util.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
       <mkdir dir="${build.dir}/mod/picl/classes/main"/>
-      <javac destdir="${build.dir}/mod/picl/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/picl/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/picl/src/main"/>
@@ -961,8 +1013,10 @@
    </target>
    <target name="mod.picl.jar" depends="mod.picl.compile-main">
       <jar jarfile="${build.dir}/picl.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/picl/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/picl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/validate/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-validate/classes/main"
@@ -980,7 +1034,8 @@
    <target name="mod.picl.test" depends="dummy,mod.picl.test-picl"/>
    <target name="mod.picl.test-picl"
            depends="mod.picl.compile-test,mod.jing.jar,mod.picl.split-picl">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/picl/test-picl/out.log"/>
          <arg value="${build.dir}/mod/picl/test-picl"/>
@@ -990,12 +1045,14 @@
          </classpath>
       </java>
    </target>
-   <target name="mod.picl.split-picl" depends="mod.picl.uptodate-split-picl,jing-jar"
+   <target name="mod.picl.split-picl"
+           depends="mod.picl.uptodate-split-picl,jing-jar"
            unless="mod.picl.uptodate-split-picl">
       <jing rngfile="test/picltest.nrl" file="mod/picl/test/picltest.xml"/>
       <delete dir="${build.dir}/mod/picl/test-picl"/>
       <mkdir dir="${build.dir}/mod/picl/test-picl"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/picl/test-picl/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/picl/test-picl/stamp"
             in="mod/picl/test/picltest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/picl/test-picl"/>
@@ -1017,7 +1074,8 @@
    </target>
    <target name="mod.regex-gen.compile-main" depends="init,mod.util.compile-main">
       <mkdir dir="${build.dir}/mod/regex-gen/classes/main"/>
-      <javac destdir="${build.dir}/mod/regex-gen/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/regex-gen/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/regex-gen/src/main"/>
@@ -1038,7 +1096,8 @@
       <jar jarfile="${build.dir}/regex-gen.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/regex-gen/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.regex-gen.srczip" depends="init">
@@ -1049,7 +1108,9 @@
    </target>
    <target name="mod.regex-gen.test" depends="dummy"/>
    <target name="mod.regex-gen.services"/>
-   <target name="mod.regex.gen" depends="mod.regex.check-gen" unless="mod.regex.gen-ok">
+   <target name="mod.regex.gen"
+           depends="mod.regex.check-gen"
+           unless="mod.regex.gen-ok">
       <mkdir dir="${build.dir}/mod/regex/gensrc/main/com/thaiopensource/datatype/xsd/regex/java"/>
       <java classname="com.thaiopensource.datatype.xsd.regex.java.gen.NamingExceptionsGen"
             fork="yes"
@@ -1082,7 +1143,8 @@
    <target name="mod.regex.compile-main"
            depends="init,mod.regex.gen,mod.util.compile-main">
       <mkdir dir="${build.dir}/mod/regex/classes/main"/>
-      <javac destdir="${build.dir}/mod/regex/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/regex/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/regex/src/main"/>
@@ -1118,8 +1180,10 @@
             <provider classname="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
             <provider classname="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
          </service>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.regex.srczip" depends="init,mod.regex.gen">
@@ -1133,7 +1197,8 @@
            depends="dummy,mod.regex.test-xerces,mod.regex.test-java,mod.regex.test-naming,mod.regex.test-hard"/>
    <target name="mod.regex.test-xerces" depends="mod.regex.compile-test">
       <mkdir dir="${build.dir}/mod/regex/test-xerces"/>
-      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
          <arg value="mod/regex/test/regextest.xml"/>
@@ -1152,7 +1217,8 @@
    </target>
    <target name="mod.regex.test-java" depends="mod.regex.compile-test">
       <mkdir dir="${build.dir}/mod/regex/test-java"/>
-      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
          <arg value="mod/regex/test/regextest.xml"/>
@@ -1171,7 +1237,8 @@
    </target>
    <target name="mod.regex.test-naming" depends="mod.regex.compile-test">
       <mkdir dir="${build.dir}/mod/regex/test-naming"/>
-      <java classname="com.thaiopensource.datatype.xsd.regex.test.NameTest" fork="yes"
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.NameTest"
+            fork="yes"
             failonerror="yes">
          <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
          <classpath>
@@ -1189,7 +1256,8 @@
    </target>
    <target name="mod.regex.test-hard" depends="mod.regex.compile-test">
       <mkdir dir="${build.dir}/mod/regex/test-hard"/>
-      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
          <arg value="mod/regex/test/hardtest.xml"/>
@@ -1220,7 +1288,8 @@
    </target>
    <target name="mod.resolver.compile-main" depends="init">
       <mkdir dir="${build.dir}/mod/resolver/classes/main"/>
-      <javac destdir="${build.dir}/mod/resolver/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/resolver/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/resolver/src/main"/>
@@ -1250,7 +1319,8 @@
    <target name="mod.rng-jarv.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main">
       <mkdir dir="${build.dir}/mod/rng-jarv/classes/main"/>
-      <javac destdir="${build.dir}/mod/rng-jarv/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/rng-jarv/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/rng-jarv/src/main"/>
@@ -1276,7 +1346,8 @@
       <jar jarfile="${build.dir}/rng-jarv.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/rng-jarv/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
@@ -1311,7 +1382,8 @@
    <target name="mod.rng-jaxp.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.regex.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main,mod.jaxp.compile-main">
       <mkdir dir="${build.dir}/mod/rng-jaxp/classes/main"/>
-      <javac destdir="${build.dir}/mod/rng-jaxp/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/rng-jaxp/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/rng-jaxp/src/main"/>
@@ -1364,22 +1436,26 @@
       <jar jarfile="${build.dir}/rng-jaxp.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/rng-jaxp/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-parse/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/pattern/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/jaxp/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
-   <target name="mod.rng-jaxp.srczip" depends="init,mod.regex.gen,mod.rng-parse.gen">
+   <target name="mod.rng-jaxp.srczip"
+           depends="init,mod.regex.gen,mod.rng-parse.gen">
       <zip zipfile="${build.dir}/mod/rng-jaxp/src.zip">
          <fileset dir="mod/rng-jaxp/src/main" includes="**/*.java"/>
          <fileset dir="mod/util/src/main" includes="**/*.java"/>
@@ -1460,7 +1536,8 @@
    <target name="mod.rng-parse.compile-main"
            depends="init,mod.rng-parse.gen,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main">
       <mkdir dir="${build.dir}/mod/rng-parse/classes/main"/>
-      <javac destdir="${build.dir}/mod/rng-parse/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/rng-parse/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/rng-parse/src/main"/>
@@ -1484,7 +1561,8 @@
       <jar jarfile="${build.dir}/rng-parse.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/rng-parse/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
@@ -1505,7 +1583,8 @@
    <target name="mod.rng-schema.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main">
       <mkdir dir="${build.dir}/mod/rng-schema/classes/main"/>
-      <javac destdir="${build.dir}/mod/rng-schema/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/rng-schema/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/rng-schema/src/main"/>
@@ -1529,7 +1608,8 @@
       <jar jarfile="${build.dir}/rng-schema.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/rng-schema/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
@@ -1565,7 +1645,8 @@
    <target name="mod.rng-schema.split-compact"
            depends="mod.rng-schema.uptodate-split-compact,jing-jar"
            unless="mod.rng-schema.uptodate-split-compact">
-      <jing rngfile="trang/test/compacttest.rnc" file="mod/rng-schema/test/compacttest.xml"
+      <jing rngfile="trang/test/compacttest.rnc"
+            file="mod/rng-schema/test/compacttest.xml"
             compactsyntax="true"/>
       <delete dir="${build.dir}/mod/rng-schema/test-compact"/>
       <mkdir dir="${build.dir}/mod/rng-schema/test-compact"/>
@@ -1585,7 +1666,8 @@
    <target name="mod.rng-validate.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.catalog.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main,mod.validate.compile-main">
       <mkdir dir="${build.dir}/mod/rng-validate/classes/main"/>
-      <javac destdir="${build.dir}/mod/rng-validate/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/rng-validate/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/rng-validate/src/main"/>
@@ -1617,7 +1699,8 @@
       <jar jarfile="${build.dir}/rng-validate.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/rng-validate/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/catalog/classes/main"
@@ -1648,7 +1731,8 @@
    <target name="mod.rng-validate.test" depends="dummy,mod.rng-validate.test-spec"/>
    <target name="mod.rng-validate.test-spec"
            depends="mod.rng-validate.compile-test,mod.jing.jar,mod.rng-validate.split-spec">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/rng-validate/test-spec/out.log"/>
          <arg value="${build.dir}/mod/rng-validate/test-spec"/>
@@ -1664,7 +1748,8 @@
       <jing rngfile="eg/testSuite.rng" file="mod/rng-validate/test/spectest.xml"/>
       <delete dir="${build.dir}/mod/rng-validate/test-spec"/>
       <mkdir dir="${build.dir}/mod/rng-validate/test-spec"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/rng-validate/test-spec/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/rng-validate/test-spec/stamp"
             in="mod/rng-validate/test/spectest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/rng-validate/test-spec"/>
@@ -1704,7 +1789,8 @@
    <target name="mod.schematron.compile-main"
            depends="init,mod.schematron.compile-res,mod.util.compile-main,mod.resolver.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
       <mkdir dir="${build.dir}/mod/schematron/classes/main"/>
-      <javac destdir="${build.dir}/mod/schematron/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/schematron/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/schematron/src/main"/>
@@ -1716,7 +1802,6 @@
             <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
             <pathelement location="lib/xalan${xalan-version}.jar"/>
             <pathelement location="lib/saxon${saxon-version}.jar"/>
-            <pathelement location="lib/saxon9${saxon9-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/schematron/classes/main">
@@ -1731,7 +1816,8 @@
       <jar jarfile="${build.dir}/schematron.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/schematron/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/validate/classes/main"
@@ -1750,13 +1836,14 @@
       </zip>
    </target>
    <target name="mod.schematron.test"
-           depends="dummy,mod.schematron.test-old-saxon,mod.schematron.test-new-saxon,mod.schematron.test-xalan,mod.schematron.test-jaxp"/>
-   <target name="mod.schematron.test-old-saxon"
-           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-old-saxon">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+           depends="dummy,mod.schematron.test-saxon-old-sch,mod.schematron.test-saxon-iso-sch,mod.schematron.test-xalan,mod.schematron.test-jaxp"/>
+   <target name="mod.schematron.test-saxon-old-sch"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-old-sch">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
-         <arg value="${build.dir}/mod/schematron/test-old-saxon/out.log"/>
-         <arg value="${build.dir}/mod/schematron/test-old-saxon"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-old-sch/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-old-sch"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="lib/saxon${saxon-version}.jar"/>
@@ -1764,56 +1851,62 @@
          </classpath>
       </java>
    </target>
-   <target name="mod.schematron.split-old-saxon"
-           depends="mod.schematron.uptodate-split-old-saxon,jing-jar"
-           unless="mod.schematron.uptodate-split-old-saxon">
-      <jing rngfile="test/schematrontest.nrl" file="mod/schematron/test/schematrontest.xml"/>
-      <delete dir="${build.dir}/mod/schematron/test-old-saxon"/>
-      <mkdir dir="${build.dir}/mod/schematron/test-old-saxon"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/schematron/test-old-saxon/stamp"
+   <target name="mod.schematron.split-saxon-old-sch"
+           depends="mod.schematron.uptodate-split-saxon-old-sch,jing-jar"
+           unless="mod.schematron.uptodate-split-saxon-old-sch">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-saxon-old-sch/stamp"
             in="mod/schematron/test/schematrontest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-         <param name="dir" expression="${build.dir}/mod/schematron/test-old-saxon"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-saxon-old-sch"/>
       </xslt>
    </target>
-   <target name="mod.schematron.uptodate-split-old-saxon">
-      <uptodate property="mod.schematron.uptodate-split-old-saxon"
-                targetfile="${build.dir}/mod/schematron/test-old-saxon/stamp"
+   <target name="mod.schematron.uptodate-split-saxon-old-sch">
+      <uptodate property="mod.schematron.uptodate-split-saxon-old-sch"
+                targetfile="${build.dir}/mod/schematron/test-saxon-old-sch/stamp"
                 srcfile="mod/schematron/test/schematrontest.xml"/>
    </target>
-   <target name="mod.schematron.test-new-saxon"
-           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-new-saxon">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+   <target name="mod.schematron.test-saxon-iso-sch"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-iso-sch">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
-         <arg value="${build.dir}/mod/schematron/test-new-saxon/out.log"/>
-         <arg value="${build.dir}/mod/schematron/test-new-saxon"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/saxon9${saxon9-version}.jar"/>
+            <pathelement location="lib/saxon${saxon-version}.jar"/>
             <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
-   <target name="mod.schematron.split-new-saxon"
-           depends="mod.schematron.uptodate-split-new-saxon,jing-jar"
-           unless="mod.schematron.uptodate-split-new-saxon">
-      <jing rngfile="test/schematrontest.nrl" file="mod/schematron/test/schematrontest.xml"/>
-      <delete dir="${build.dir}/mod/schematron/test-new-saxon"/>
-      <mkdir dir="${build.dir}/mod/schematron/test-new-saxon"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/schematron/test-new-saxon/stamp"
-            in="mod/schematron/test/schematrontest.xml">
+   <target name="mod.schematron.split-saxon-iso-sch"
+           depends="mod.schematron.uptodate-split-saxon-iso-sch,jing-jar"
+           unless="mod.schematron.uptodate-split-saxon-iso-sch">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/isoschematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-saxon-iso-sch/stamp"
+            in="mod/schematron/test/isoschematrontest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-         <param name="dir" expression="${build.dir}/mod/schematron/test-new-saxon"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
       </xslt>
    </target>
-   <target name="mod.schematron.uptodate-split-new-saxon">
-      <uptodate property="mod.schematron.uptodate-split-new-saxon"
-                targetfile="${build.dir}/mod/schematron/test-new-saxon/stamp"
-                srcfile="mod/schematron/test/schematrontest.xml"/>
+   <target name="mod.schematron.uptodate-split-saxon-iso-sch">
+      <uptodate property="mod.schematron.uptodate-split-saxon-iso-sch"
+                targetfile="${build.dir}/mod/schematron/test-saxon-iso-sch/stamp"
+                srcfile="mod/schematron/test/isoschematrontest.xml"/>
    </target>
    <target name="mod.schematron.test-xalan"
            depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-xalan">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/schematron/test-xalan/out.log"/>
          <arg value="${build.dir}/mod/schematron/test-xalan"/>
@@ -1828,10 +1921,12 @@
    <target name="mod.schematron.split-xalan"
            depends="mod.schematron.uptodate-split-xalan,jing-jar"
            unless="mod.schematron.uptodate-split-xalan">
-      <jing rngfile="test/schematrontest.nrl" file="mod/schematron/test/schematrontest.xml"/>
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
       <delete dir="${build.dir}/mod/schematron/test-xalan"/>
       <mkdir dir="${build.dir}/mod/schematron/test-xalan"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/schematron/test-xalan/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-xalan/stamp"
             in="mod/schematron/test/schematrontest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/schematron/test-xalan"/>
@@ -1844,7 +1939,8 @@
    </target>
    <target name="mod.schematron.test-jaxp"
            depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-jaxp">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/schematron/test-jaxp/out.log"/>
          <arg value="${build.dir}/mod/schematron/test-jaxp"/>
@@ -1857,10 +1953,12 @@
    <target name="mod.schematron.split-jaxp"
            depends="mod.schematron.uptodate-split-jaxp,jing-jar"
            unless="mod.schematron.uptodate-split-jaxp">
-      <jing rngfile="test/schematrontest.nrl" file="mod/schematron/test/schematrontest.xml"/>
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
       <delete dir="${build.dir}/mod/schematron/test-jaxp"/>
       <mkdir dir="${build.dir}/mod/schematron/test-jaxp"/>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/schematron/test-jaxp/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-jaxp/stamp"
             in="mod/schematron/test/schematrontest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/schematron/test-jaxp"/>
@@ -1878,6 +1976,9 @@
               failonerror="false"/>
       <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
             append="true"
+            message="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
             message="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory${line.separator}"/>
       <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
             append="true"
@@ -1892,7 +1993,8 @@
    <target name="mod.trang.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.catalog.compile-main,mod.regex.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.rng-parse.compile-main,mod.dtd-parse.compile-main,mod.infer.compile-main,mod.rng-schema.compile-main,mod.convert-from-xml.compile-main,mod.convert-to-xsd.compile-main,mod.convert-from-dtd.compile-main,mod.convert-to-dtd.compile-main">
       <mkdir dir="${build.dir}/mod/trang/classes/main"/>
-      <javac destdir="${build.dir}/mod/trang/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/trang/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/trang/src/main"/>
@@ -1939,13 +2041,16 @@
          <service type="org.relaxng.datatype.DatatypeLibraryFactory">
             <provider classname="com.thaiopensource.datatype.xsd.DatatypeLibraryFactoryImpl"/>
          </service>
-         <fileset dir="${build.dir}/mod/trang/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/trang/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/catalog/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
@@ -1954,7 +2059,8 @@
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/infer/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/rng-schema/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/convert-from-xml/classes/main"
@@ -1992,7 +2098,8 @@
    <target name="mod.trang.services"/>
    <target name="mod.util.compile-main" depends="init">
       <mkdir dir="${build.dir}/mod/util/classes/main"/>
-      <javac destdir="${build.dir}/mod/util/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/util/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/util/src/main"/>
@@ -2017,7 +2124,8 @@
    </target>
    <target name="mod.util.jar" depends="mod.util.compile-main">
       <jar jarfile="${build.dir}/util.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.util.srczip" depends="init">
@@ -2046,7 +2154,8 @@
    <target name="mod.validate.compile-main"
            depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main">
       <mkdir dir="${build.dir}/mod/validate/classes/main"/>
-      <javac destdir="${build.dir}/mod/validate/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/validate/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/validate/src/main"/>
@@ -2070,7 +2179,8 @@
       <jar jarfile="${build.dir}/validate.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/validate/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/resolver/classes/main"
                   includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
@@ -2105,7 +2215,8 @@
    <target name="mod.xerces.compile-main"
            depends="init,mod.util.compile-main,mod.validate.compile-main">
       <mkdir dir="${build.dir}/mod/xerces/classes/main"/>
-      <javac destdir="${build.dir}/mod/xerces/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/xerces/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/xerces/src/main"/>
@@ -2126,8 +2237,10 @@
    </target>
    <target name="mod.xerces.jar" depends="mod.xerces.compile-main">
       <jar jarfile="${build.dir}/xerces.jar" duplicate="fail">
-         <fileset dir="${build.dir}/mod/xerces/classes/main" includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xerces/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/validate/classes/main"
                   includes="**/*.class,**/resources/*"/>
       </jar>
@@ -2152,7 +2265,8 @@
    <target name="mod.xsd-datatype.compile-main"
            depends="init,mod.util.compile-main,mod.datatype.compile-main,mod.regex.compile-main">
       <mkdir dir="${build.dir}/mod/xsd-datatype/classes/main"/>
-      <javac destdir="${build.dir}/mod/xsd-datatype/classes/main" debug="true"
+      <javac destdir="${build.dir}/mod/xsd-datatype/classes/main"
+             debug="true"
              debuglevel="lines,source">
          <src>
             <pathelement location="mod/xsd-datatype/src/main"/>
@@ -2190,10 +2304,12 @@
       <jar jarfile="${build.dir}/xsd-datatype.jar" duplicate="fail">
          <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/util/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
          <fileset dir="${build.dir}/mod/datatype/classes/main"
                   includes="**/*.class,**/resources/*"/>
-         <fileset dir="${build.dir}/mod/regex/classes/main" includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
       </jar>
    </target>
    <target name="mod.xsd-datatype.srczip" depends="init,mod.regex.gen">
@@ -2209,7 +2325,8 @@
            depends="dummy,mod.xsd-datatype.test-xsd,mod.xsd-datatype.test-unit"/>
    <target name="mod.xsd-datatype.test-xsd"
            depends="mod.xsd-datatype.compile-test,mod.jing.jar,mod.xsd-datatype.split-xsd">
-      <java classname="com.thaiopensource.relaxng.util.TestDriver" fork="yes"
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
             failonerror="yes">
          <arg value="${build.dir}/mod/xsd-datatype/test-xsd/out.log"/>
          <arg value="${build.dir}/mod/xsd-datatype/test-xsd"/>
@@ -2222,7 +2339,8 @@
    <target name="mod.xsd-datatype.split-xsd"
            depends="mod.xsd-datatype.uptodate-split-xsd,jing-jar"
            unless="mod.xsd-datatype.uptodate-split-xsd">
-      <jing rngfile="test/xsdtest.rnc" file="mod/xsd-datatype/test/xsdtest.xml"
+      <jing rngfile="test/xsdtest.rnc"
+            file="mod/xsd-datatype/test/xsdtest.xml"
             compactsyntax="true"/>
       <delete dir="${build.dir}/mod/xsd-datatype/test-xsd"/>
       <mkdir dir="${build.dir}/mod/xsd-datatype/test-xsd"/>
@@ -2231,7 +2349,8 @@
             out="${build.dir}/mod/xsd-datatype/test-xsd/xsdtest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
       </xslt>
-      <xslt style="test/split.xsl" out="${build.dir}/mod/xsd-datatype/test-xsd/stamp"
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/xsd-datatype/test-xsd/stamp"
             in="${build.dir}/mod/xsd-datatype/test-xsd/xsdtest.xml">
          <factory name="net.sf.saxon.TransformerFactoryImpl"/>
          <param name="dir" expression="${build.dir}/mod/xsd-datatype/test-xsd"/>
@@ -2242,7 +2361,8 @@
                 targetfile="${build.dir}/mod/xsd-datatype/test-xsd/stamp"
                 srcfile="mod/xsd-datatype/test/xsdtest.xml"/>
    </target>
-   <target name="mod.xsd-datatype.test-unit" depends="mod.xsd-datatype.compile-test">
+   <target name="mod.xsd-datatype.test-unit"
+           depends="mod.xsd-datatype.compile-test">
       <mkdir dir="${build.dir}/mod/xsd-datatype/test-unit"/>
       <testng workingDir="${build.dir}/mod/xsd-datatype/test-unit"
               outputdir="${build.dir}/mod/xsd-datatype/test-unit/report"
@@ -2282,7 +2402,8 @@
    <target name="gen" depends="init,mod.regex.gen,mod.rng-parse.gen"/>
    <target name="compile" depends="mod.jing.compile-main,mod.trang.compile-main"/>
    <target name="jar" depends="mod.dtdinst.jar,mod.jing.jar,mod.trang.jar"/>
-   <target name="srczip" depends="mod.dtdinst.srczip,mod.jing.srczip,mod.trang.srczip"/>
+   <target name="srczip"
+           depends="mod.dtdinst.srczip,mod.jing.srczip,mod.trang.srczip"/>
    <target name="jing-jar" depends="mod.jing.jar">
       <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
          <classpath>

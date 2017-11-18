@@ -38,6 +38,7 @@
   </ant>
   <compile/>
   <service type="com.thaiopensource.validate.SchemaReaderFactory">
+    <provider classname="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.OldSaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.XalanSchemaReaderFactory"/>

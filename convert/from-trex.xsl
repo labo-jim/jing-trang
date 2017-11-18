@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Stylesheet performing partial conversion from TREX to RELAX NG. -->
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
   exclude-result-prefixes="trex"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:trex="http://www.thaiopensource.com/trex"
