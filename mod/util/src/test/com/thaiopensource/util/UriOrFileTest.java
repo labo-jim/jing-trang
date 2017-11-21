@@ -14,7 +14,7 @@ public class UriOrFileTest {
             {"./foo:bar"},
             {"foo\u0e01"},
             {"c:foo"},
-            {"c:\\foo"},
+            {"c:\foo"},
             {"12:34"}
     };
   }
