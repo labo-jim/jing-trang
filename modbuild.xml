@@ -2,13 +2,13 @@
 <project>
    <xmlproperty file="version.xml"/>
    <property name="build.dir" value="${basedir}/build"/>
-   <property name="javacc.dir" value="lib"/>
+   <property name="javacc.dir" value="${lib.dir}"/>
    <property name="ant.build.javac.source" value="1.5"/>
    <property name="ant.build.javac.target" value="1.5"/>
    <property file="dependencies-version.properties"/>
    <taskdef name="testng" classname="org.testng.TestNGAntTask">
       <classpath>
-         <pathelement location="lib/testng${testng-version}.jar"/>
+         <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
       </classpath>
    </taskdef>
    <target name="dummy"/>
@@ -27,7 +27,7 @@
          <classpath>
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
-            <pathelement location="lib/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/catalog/classes/main">
@@ -47,8 +47,8 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="${build.dir}/mod/resolver/classes/test"/>
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
-            <pathelement location="lib/resolver${resolver-version}.jar"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -91,7 +91,7 @@
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
             <pathelement location="mod/resolver/src/test"/>
             <pathelement location="mod/resolver/src/main"/>
-            <pathelement location="lib/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
          </classpath>
       </testng>
    </target>
@@ -519,7 +519,7 @@
             <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
             <pathelement location="${build.dir}/mod/regex/classes/test"/>
             <pathelement location="${build.dir}/mod/regex/classes/main"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -790,7 +790,7 @@
          <arg value="${build.dir}/mod/nvdl/test-mns"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -821,7 +821,7 @@
          <arg value="${build.dir}/mod/nvdl/test-nrl"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -852,7 +852,7 @@
          <arg value="${build.dir}/mod/nvdl/test-nvdl"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -926,7 +926,7 @@
             <pathelement location="${build.dir}/mod/datatype/classes/main"/>
             <pathelement location="${build.dir}/mod/rng-parse/classes/test"/>
             <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -1041,7 +1041,7 @@
          <arg value="${build.dir}/mod/picl/test-picl"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1127,7 +1127,7 @@
             failonerror="yes">
 	        <arg value="com.thaiopensource.datatype.xsd.regex.java.Categories"/>
 	        <arg value="${build.dir}/mod/regex/gensrc/main"/>
-	        <arg value="lib/UnicodeData-3.1.0.txt"/>
+	        <arg value="${lib.dir}/UnicodeData-3.1.0.txt"/>
 	        <classpath>
 	           <pathelement location="${build.dir}/mod/regex-gen/classes/main"/>
 	           <pathelement location="${build.dir}/mod/util/classes/main"/>
@@ -1152,7 +1152,7 @@
          </src>
          <classpath>
             <pathelement location="${build.dir}/mod/util/classes/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/regex/classes/main">
@@ -1170,7 +1170,7 @@
             <pathelement location="${build.dir}/mod/regex/classes/main"/>
             <pathelement location="${build.dir}/mod/util/classes/test"/>
             <pathelement location="${build.dir}/mod/util/classes/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -1211,7 +1211,7 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="mod/util/src/test"/>
             <pathelement location="mod/util/src/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1231,7 +1231,7 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="mod/util/src/test"/>
             <pathelement location="mod/util/src/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1250,7 +1250,7 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="mod/util/src/test"/>
             <pathelement location="mod/util/src/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1270,7 +1270,7 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="mod/util/src/test"/>
             <pathelement location="mod/util/src/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1331,7 +1331,7 @@
             <pathelement location="${build.dir}/mod/datatype/classes/main"/>
             <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
             <pathelement location="${build.dir}/mod/pattern/classes/main"/>
-            <pathelement location="lib/isorelax${isorelax-version}.jar"/>
+            <pathelement location="${lib.dir}/isorelax${isorelax-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/rng-jarv/classes/main">
@@ -1428,7 +1428,7 @@
             <pathelement location="${build.dir}/mod/pattern/classes/main"/>
             <pathelement location="${build.dir}/mod/jaxp/classes/test"/>
             <pathelement location="${build.dir}/mod/jaxp/classes/main"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -1680,8 +1680,8 @@
             <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
             <pathelement location="${build.dir}/mod/pattern/classes/main"/>
             <pathelement location="${build.dir}/mod/validate/classes/main"/>
-            <pathelement location="lib/ant${ant-version}.jar"/>
-            <pathelement location="lib/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/ant${ant-version}.jar"/>
+            <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/rng-validate/classes/main">
@@ -1738,7 +1738,7 @@
          <arg value="${build.dir}/mod/rng-validate/test-spec"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1800,8 +1800,8 @@
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
             <pathelement location="${build.dir}/mod/validate/classes/main"/>
             <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
-            <pathelement location="lib/xalan${xalan-version}.jar"/>
-            <pathelement location="lib/saxon${saxon-version}.jar"/>
+            <pathelement location="${lib.dir}/xalan${xalan-version}.jar"/>
+            <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/schematron/classes/main">
@@ -1846,8 +1846,8 @@
          <arg value="${build.dir}/mod/schematron/test-saxon-old-sch"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/saxon${saxon-version}.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1879,8 +1879,8 @@
          <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/saxon${saxon-version}.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1912,9 +1912,9 @@
          <arg value="${build.dir}/mod/schematron/test-xalan"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xalan${xalan-version}.jar"/>
-            <pathelement location="lib/serializer${-serializer-version}.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xalan${xalan-version}.jar"/>
+            <pathelement location="${lib.dir}/serializer${serializer-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1946,7 +1946,7 @@
          <arg value="${build.dir}/mod/schematron/test-jaxp"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -2014,7 +2014,7 @@
             <pathelement location="${build.dir}/mod/convert-to-xsd/classes/main"/>
             <pathelement location="${build.dir}/mod/convert-from-dtd/classes/main"/>
             <pathelement location="${build.dir}/mod/convert-to-dtd/classes/main"/>
-            <pathelement location="lib/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/trang/classes/main">
@@ -2118,7 +2118,7 @@
          </src>
          <classpath>
             <pathelement location="${build.dir}/mod/util/classes/main"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -2164,7 +2164,7 @@
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
             <pathelement location="${build.dir}/mod/datatype/classes/main"/>
-            <pathelement location="lib/isorelax${isorelax-version}.jar"/>
+            <pathelement location="${lib.dir}/isorelax${isorelax-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/validate/classes/main">
@@ -2224,7 +2224,7 @@
          <classpath>
             <pathelement location="${build.dir}/mod/util/classes/main"/>
             <pathelement location="${build.dir}/mod/validate/classes/main"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/xerces/classes/main">
@@ -2296,7 +2296,7 @@
             <pathelement location="${build.dir}/mod/datatype/classes/main"/>
             <pathelement location="${build.dir}/mod/regex/classes/test"/>
             <pathelement location="${build.dir}/mod/regex/classes/main"/>
-            <pathelement location="lib/testng${testng-version}.jar"/>
+            <pathelement location="${lib.dir}/testng${testng-version}.jar"/>
          </classpath>
       </javac>
    </target>
@@ -2332,7 +2332,7 @@
          <arg value="${build.dir}/mod/xsd-datatype/test-xsd"/>
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
-            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
          </classpath>
       </java>
    </target>
