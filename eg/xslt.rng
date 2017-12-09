@@ -14,7 +14,11 @@
       </choice>
    </start>
    <define name="version">
-      <value>1.0</value>
+      <choice>
+        <value>1.0</value>
+        <value>2.0</value>
+        <value>3.0</value>
+      </choice>
    </define>
    <define name="top-level-elements.model">
       <zeroOrMore>
