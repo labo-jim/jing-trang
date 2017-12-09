@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- TODO: Deal with fixed attributes properly. -->
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:a="http://relaxng.org/ns/compatibility/annotations/0.9"
   xmlns="http://relaxng.org/ns/structure/0.9">

@@ -5,13 +5,12 @@
   <depends module="rng-validate"/>
   <depends lib="xalan"/>
   <depends lib="saxon"/>
-  <depends lib="saxon9"/>
-  <test name="old-saxon" in="mod/schematron/test/schematrontest.xml"
+  <test name="saxon-old-sch" in="mod/schematron/test/schematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
 	lib="saxon"/>
-  <test name="new-saxon" in="mod/schematron/test/schematrontest.xml"
+  <test name="saxon-iso-sch" in="mod/schematron/test/isoschematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
-	lib="saxon9"/>
+	lib="saxon"/>
   <test name="xalan" in="mod/schematron/test/schematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
 	lib="xalan"/>
@@ -27,17 +26,18 @@
       <xslt style="mod/schematron/lib/xsltc-fixup.xsl"
 	    in="mod/schematron/src/main/${mod.schematron.respackage}/schematron.xsl"
 	    out="${mod.schematron.resdir}/schematron-xsltc.xsl">
-	      <factory name="com.icl.saxon.TransformerFactoryImpl"/>
+	      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
       </xslt>
       <xslt style="mod/schematron/lib/xsltc-fixup.xsl"
       in="mod/schematron/src/main/${mod.schematron.respackage}/iso-schematron.xsl"
       out="${mod.schematron.resdir}/iso-schematron-xsltc.xsl">
-        <factory name="com.icl.saxon.TransformerFactoryImpl"/>
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
       </xslt>
     </target>
   </ant>
   <compile/>
   <service type="com.thaiopensource.validate.SchemaReaderFactory">
+    <provider classname="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.OldSaxonSchemaReaderFactory"/>
     <provider classname="com.thaiopensource.validate.schematron.XalanSchemaReaderFactory"/>

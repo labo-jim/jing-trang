@@ -3,7 +3,7 @@
 undeclared attributes. Only declared attributes are allowed. -->
 
 <xsl:stylesheet
-  version="1.0"
+  version="2.0"
   xmlns="http://relaxng.org/ns/structure/0.9"
   xmlns:rlx="http://www.xml.gr.jp/xmlns/relaxCore"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

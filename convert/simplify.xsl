@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Simplifies the output from from-relax.xsl. -->
 <xsl:stylesheet
-  version="1.0"
+  version="2.0"
   xmlns="http://relaxng.org/ns/structure/0.9"
   xmlns:rng="http://relaxng.org/ns/structure/0.9"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

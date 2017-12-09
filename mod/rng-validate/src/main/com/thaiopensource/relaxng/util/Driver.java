@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class Driver {
+public class Driver {
   static private String usageKey = "usage";
 
   static public void setUsageKey(String key) {
@@ -117,7 +117,8 @@ class Driver {
     }
     if (!catalogUris.isEmpty()) {
       try {
-        properties.put(ValidateProperty.RESOLVER, new CatalogResolver(catalogUris));
+        CatalogResolver resolver = new CatalogResolver(catalogUris);
+          properties.put(ValidateProperty.RESOLVER, resolver);
       }
       catch (LinkageError e) {
         eh.print(localizer.message("resolver_not_found"));

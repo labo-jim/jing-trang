@@ -51,9 +51,11 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
   private final Class<? extends SAXTransformerFactory> transformerFactoryClass;
   private final TransformerFactoryInitializer transformerFactoryInitializer;
   private final Templates schematron;
+  private final Templates resolveInclude;
   private final Schema schematronSchema;
   private static final String SCHEMATRON_SCHEMA = "iso-schematron.rnc";
   private static final String SCHEMATRON_STYLESHEET = "iso-schematron.xsl";
+  private static final String RESOLVE_INCLUDE_STYLESHEET = "iso-dsdl-include.xsl";
   // XSLTC has some problems with extension functions and function-available, so
   // we need a separate stylesheet.  See
   // https://issues.apache.org/jira/browse/XALANJ-2464
@@ -73,12 +75,18 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
           throws TransformerConfigurationException, IncorrectSchemaException {
     this.transformerFactoryClass = transformerFactory.getClass();
     this.transformerFactoryInitializer = transformerFactoryInitializer;
+    // XSL for Schematron compilation
     final boolean isXsltc = isXsltc(transformerFactoryClass);
     final String stylesheet = isXsltc ? SCHEMATRON_XSLTC_STYLESHEET : SCHEMATRON_STYLESHEET;
     final String resourceName = fullResourceName(stylesheet);
     final StreamSource source = new StreamSource(getResourceAsStream(resourceName));
     initTransformerFactory(transformerFactory);
     schematron = transformerFactory.newTemplates(source);
+    // XSL for include resolution
+    final String resolveIncludeResourceName = fullResourceName(RESOLVE_INCLUDE_STYLESHEET);
+    final StreamSource resolveIncludeSource = new StreamSource(getResourceAsStream(resolveIncludeResourceName));
+    initTransformerFactory(transformerFactory);
+    resolveInclude = transformerFactory.newTemplates(resolveIncludeSource);
     InputSource schemaSource = new InputSource(getResourceAsStream(fullResourceName(SCHEMATRON_SCHEMA)));
     PropertyMapBuilder builder = new PropertyMapBuilder();
     builder.put(ValidateProperty.ERROR_HANDLER, new DraconianErrorHandler());
@@ -345,6 +353,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     try {
       SAXTransformerFactory factory = (SAXTransformerFactory)transformerFactoryClass.newInstance();
       initTransformerFactory(factory);
+      TransformerHandler includeTransformerHandler = factory.newTransformerHandler(resolveInclude);
       TransformerHandler transformerHandler = factory.newTransformerHandler(schematron);
       ifValidHandler.setDelegate(transformerHandler);
       Transformer transformer = transformerHandler.getTransformer();
@@ -361,7 +370,9 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
       XMLReader xr = source.getXMLReader();
       if (xr == null)
         xr = ResolverFactory.createResolver(properties).createXMLReader();
-      xr.setContentHandler(ifValidHandler);      
+      // Resolve includes before validating the Schematron file
+      xr.setContentHandler(includeTransformerHandler);      
+      includeTransformerHandler.setResult(new SAXResult(ifValidHandler));
       xr.setDTDHandler(validator.getDTDHandler());  // not strictly necessary
       factory.setErrorListener(new SAXErrorListener(ceh, systemId));
       TemplatesHandler templatesHandler = factory.newTemplatesHandler();

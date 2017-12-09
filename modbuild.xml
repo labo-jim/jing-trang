@@ -1,0 +1,2418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+   <xmlproperty file="version.xml"/>
+   <property name="build.dir" value="${basedir}/build"/>
+   <property name="javacc.dir" value="lib"/>
+   <property name="ant.build.javac.source" value="1.5"/>
+   <property name="ant.build.javac.target" value="1.5"/>
+   <property file="dependencies-version.properties"/>
+   <taskdef name="testng" classname="org.testng.TestNGAntTask">
+      <classpath>
+         <pathelement location="lib/testng${testng-version}.jar"/>
+      </classpath>
+   </taskdef>
+   <target name="dummy"/>
+   <target name="init">
+      <mkdir dir="${build.dir}"/>
+   </target>
+   <target name="mod.catalog.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main">
+      <mkdir dir="${build.dir}/mod/catalog/classes/main"/>
+      <javac destdir="${build.dir}/mod/catalog/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/catalog/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="lib/resolver${resolver-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/catalog/classes/main">
+         <fileset dir="mod/catalog/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.catalog.compile-test"
+           depends="mod.catalog.compile-main,mod.util.compile-test,mod.resolver.compile-test">
+      <mkdir dir="${build.dir}/mod/catalog/classes/test"/>
+      <javac destdir="${build.dir}/mod/catalog/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/catalog/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/catalog/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="lib/resolver${resolver-version}.jar"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.catalog.jar" depends="mod.catalog.compile-main">
+      <jar jarfile="${build.dir}/catalog.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/catalog/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.catalog.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/catalog/src.zip">
+         <fileset dir="mod/catalog/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.catalog.test" depends="dummy,mod.catalog.test-unit"/>
+   <target name="mod.catalog.test-unit" depends="mod.catalog.compile-test">
+      <mkdir dir="${build.dir}/mod/catalog/test-unit"/>
+      <testng workingDir="${build.dir}/mod/catalog/test-unit"
+              outputdir="${build.dir}/mod/catalog/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.catalog.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/catalog/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/catalog/classes/test"/>
+            <pathelement location="${build.dir}/mod/catalog/classes/main"/>
+            <pathelement location="mod/catalog/src/test"/>
+            <pathelement location="mod/catalog/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="mod/resolver/src/test"/>
+            <pathelement location="mod/resolver/src/main"/>
+            <pathelement location="lib/resolver${resolver-version}.jar"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.catalog.services"/>
+   <target name="mod.convert-from-dtd.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.dtd-parse.compile-main,mod.rng-schema.compile-main">
+      <mkdir dir="${build.dir}/mod/convert-from-dtd/classes/main"/>
+      <javac destdir="${build.dir}/mod/convert-from-dtd/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/convert-from-dtd/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-schema/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/convert-from-dtd/classes/main">
+         <fileset dir="mod/convert-from-dtd/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.convert-from-dtd.compile-test"
+           depends="mod.convert-from-dtd.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.dtd-parse.compile-test,mod.rng-schema.compile-test">
+      <mkdir dir="${build.dir}/mod/convert-from-dtd/classes/test"/>
+   </target>
+   <target name="mod.convert-from-dtd.jar"
+           depends="mod.convert-from-dtd.compile-main">
+      <jar jarfile="${build.dir}/convert-from-dtd.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/convert-from-dtd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.convert-from-dtd.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/convert-from-dtd/src.zip">
+         <fileset dir="mod/convert-from-dtd/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/dtd-parse/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.convert-from-dtd.test" depends="dummy"/>
+   <target name="mod.convert-from-dtd.services"/>
+   <target name="mod.convert-from-xml.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.infer.compile-main,mod.datatype.compile-main,mod.rng-schema.compile-main">
+      <mkdir dir="${build.dir}/mod/convert-from-xml/classes/main"/>
+      <javac destdir="${build.dir}/mod/convert-from-xml/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/convert-from-xml/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/infer/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-schema/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/convert-from-xml/classes/main">
+         <fileset dir="mod/convert-from-xml/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.convert-from-xml.compile-test"
+           depends="mod.convert-from-xml.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.infer.compile-test,mod.datatype.compile-test,mod.rng-schema.compile-test">
+      <mkdir dir="${build.dir}/mod/convert-from-xml/classes/test"/>
+   </target>
+   <target name="mod.convert-from-xml.jar"
+           depends="mod.convert-from-xml.compile-main">
+      <jar jarfile="${build.dir}/convert-from-xml.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/convert-from-xml/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.convert-from-xml.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/convert-from-xml/src.zip">
+         <fileset dir="mod/convert-from-xml/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/infer/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.convert-from-xml.test" depends="dummy"/>
+   <target name="mod.convert-from-xml.services"/>
+   <target name="mod.convert-to-dtd.compile-main"
+           depends="init,mod.util.compile-main,mod.rng-schema.compile-main">
+      <mkdir dir="${build.dir}/mod/convert-to-dtd/classes/main"/>
+      <javac destdir="${build.dir}/mod/convert-to-dtd/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/convert-to-dtd/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-schema/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/convert-to-dtd/classes/main">
+         <fileset dir="mod/convert-to-dtd/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.convert-to-dtd.compile-test"
+           depends="mod.convert-to-dtd.compile-main,mod.util.compile-test,mod.rng-schema.compile-test">
+      <mkdir dir="${build.dir}/mod/convert-to-dtd/classes/test"/>
+   </target>
+   <target name="mod.convert-to-dtd.jar" depends="mod.convert-to-dtd.compile-main">
+      <jar jarfile="${build.dir}/convert-to-dtd.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/convert-to-dtd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.convert-to-dtd.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/convert-to-dtd/src.zip">
+         <fileset dir="mod/convert-to-dtd/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.convert-to-dtd.test" depends="dummy"/>
+   <target name="mod.convert-to-dtd.services"/>
+   <target name="mod.convert-to-xsd.compile-main"
+           depends="init,mod.util.compile-main,mod.datatype.compile-main,mod.rng-schema.compile-main">
+      <mkdir dir="${build.dir}/mod/convert-to-xsd/classes/main"/>
+      <javac destdir="${build.dir}/mod/convert-to-xsd/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/convert-to-xsd/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-schema/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/convert-to-xsd/classes/main">
+         <fileset dir="mod/convert-to-xsd/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.convert-to-xsd.compile-test"
+           depends="mod.convert-to-xsd.compile-main,mod.util.compile-test,mod.datatype.compile-test,mod.rng-schema.compile-test">
+      <mkdir dir="${build.dir}/mod/convert-to-xsd/classes/test"/>
+   </target>
+   <target name="mod.convert-to-xsd.jar" depends="mod.convert-to-xsd.compile-main">
+      <jar jarfile="${build.dir}/convert-to-xsd.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/convert-to-xsd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.convert-to-xsd.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/convert-to-xsd/src.zip">
+         <fileset dir="mod/convert-to-xsd/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.convert-to-xsd.test"
+           depends="dummy,mod.convert-to-xsd.test-toxsd"/>
+   <target name="mod.convert-to-xsd.test-toxsd"
+           depends="mod.convert-to-xsd.compile-test,mod.trang.jar,mod.convert-to-xsd.split-toxsd">
+      <java classname="com.thaiopensource.relaxng.translate.test.CompactTestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/convert-to-xsd/test-toxsd/out.log"/>
+         <arg value="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
+         <arg value="xsd"/>
+         <classpath>
+            <pathelement location="${build.dir}/trang.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.convert-to-xsd.split-toxsd"
+           depends="mod.convert-to-xsd.uptodate-split-toxsd,jing-jar"
+           unless="mod.convert-to-xsd.uptodate-split-toxsd">
+      <jing rngfile="trang/test/toxsdtest.rnc"
+            file="mod/convert-to-xsd/test/toxsdtest.xml"
+            compactsyntax="true"/>
+      <delete dir="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
+      <mkdir dir="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
+      <xslt style="trang/test/compactsplit.xsl"
+            out="${build.dir}/mod/convert-to-xsd/test-toxsd/stamp"
+            in="mod/convert-to-xsd/test/toxsdtest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/convert-to-xsd/test-toxsd"/>
+      </xslt>
+   </target>
+   <target name="mod.convert-to-xsd.uptodate-split-toxsd">
+      <uptodate property="mod.convert-to-xsd.uptodate-split-toxsd"
+                targetfile="${build.dir}/mod/convert-to-xsd/test-toxsd/stamp"
+                srcfile="mod/convert-to-xsd/test/toxsdtest.xml"/>
+   </target>
+   <target name="mod.convert-to-xsd.services"/>
+   <target name="mod.datatype.compile-main" depends="init,mod.util.compile-main">
+      <mkdir dir="${build.dir}/mod/datatype/classes/main"/>
+      <javac destdir="${build.dir}/mod/datatype/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/datatype/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/datatype/classes/main">
+         <fileset dir="mod/datatype/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.datatype.compile-test"
+           depends="mod.datatype.compile-main,mod.util.compile-test">
+      <mkdir dir="${build.dir}/mod/datatype/classes/test"/>
+   </target>
+   <target name="mod.datatype.jar" depends="mod.datatype.compile-main">
+      <jar jarfile="${build.dir}/datatype.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.datatype.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/datatype/src.zip">
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.datatype.test" depends="dummy"/>
+   <target name="mod.datatype.services"/>
+   <target name="mod.dtd-parse.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main">
+      <mkdir dir="${build.dir}/mod/dtd-parse/classes/main"/>
+      <javac destdir="${build.dir}/mod/dtd-parse/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/dtd-parse/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/dtd-parse/classes/main">
+         <fileset dir="mod/dtd-parse/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.dtd-parse.compile-test"
+           depends="mod.dtd-parse.compile-main,mod.util.compile-test,mod.resolver.compile-test">
+      <mkdir dir="${build.dir}/mod/dtd-parse/classes/test"/>
+   </target>
+   <target name="mod.dtd-parse.jar" depends="mod.dtd-parse.compile-main">
+      <jar jarfile="${build.dir}/dtd-parse.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.dtd-parse.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/dtd-parse/src.zip">
+         <fileset dir="mod/dtd-parse/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.dtd-parse.test" depends="dummy"/>
+   <target name="mod.dtd-parse.services"/>
+   <target name="mod.dtdinst.compile-main"
+           depends="init,mod.util.compile-main,mod.dtd-parse.compile-main">
+      <mkdir dir="${build.dir}/mod/dtdinst/classes/main"/>
+      <javac destdir="${build.dir}/mod/dtdinst/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/dtdinst/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/dtdinst/classes/main">
+         <fileset dir="mod/dtdinst/src/main" includes="**/resources/*"/>
+      </copy>
+      <mkdir dir="${build.dir}/mod/dtdinst/classes/main/com/thaiopensource/xml/dtd/app/resources"/>
+      <echo file="${build.dir}/mod/dtdinst/classes/main/com/thaiopensource/xml/dtd/app/resources/Version.properties"
+            message="version=${version}&#xA;"/>
+   </target>
+   <target name="mod.dtdinst.compile-test"
+           depends="mod.dtdinst.compile-main,mod.util.compile-test,mod.dtd-parse.compile-test">
+      <mkdir dir="${build.dir}/mod/dtdinst/classes/test"/>
+      <javac destdir="${build.dir}/mod/dtdinst/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/dtdinst/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/dtdinst/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/main"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.dtdinst.jar" depends="mod.dtdinst.compile-main">
+      <jar jarfile="${build.dir}/dtdinst.jar" duplicate="fail">
+         <manifest>
+            <attribute name="Main-Class" value="com/thaiopensource/xml/dtd/app/Driver"/>
+         </manifest>
+         <fileset dir="${build.dir}/mod/dtdinst/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.dtdinst.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/dtdinst/src.zip">
+         <fileset dir="mod/dtdinst/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/dtd-parse/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.dtdinst.test" depends="dummy,mod.dtdinst.test-main"/>
+   <target name="mod.dtdinst.test-main" depends="mod.dtdinst.compile-test">
+      <mkdir dir="${build.dir}/mod/dtdinst/test-main"/>
+      <java classname="com.thaiopensource.xml.dtd.test.Driver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="mod/dtdinst/test"/>
+         <arg value="${build.dir}/mod/dtdinst/test-main"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/dtdinst/classes/test"/>
+            <pathelement location="${build.dir}/mod/dtdinst/classes/main"/>
+            <pathelement location="mod/dtdinst/src/test"/>
+            <pathelement location="mod/dtdinst/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/main"/>
+            <pathelement location="mod/dtd-parse/src/test"/>
+            <pathelement location="mod/dtd-parse/src/main"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.dtdinst.services"/>
+   <target name="mod.infer.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.regex.compile-main">
+      <mkdir dir="${build.dir}/mod/infer/classes/main"/>
+      <javac destdir="${build.dir}/mod/infer/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/infer/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/infer/classes/main">
+         <fileset dir="mod/infer/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.infer.compile-test"
+           depends="mod.infer.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test,mod.xsd-datatype.compile-test,mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/infer/classes/test"/>
+      <javac destdir="${build.dir}/mod/infer/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/infer/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/infer/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.infer.jar" depends="mod.infer.compile-main">
+      <jar jarfile="${build.dir}/infer.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.infer.srczip" depends="init,mod.regex.gen">
+      <zip zipfile="${build.dir}/mod/infer/src.zip">
+         <fileset dir="mod/infer/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.infer.test" depends="dummy,mod.infer.test-unit"/>
+   <target name="mod.infer.test-unit" depends="mod.infer.compile-test">
+      <mkdir dir="${build.dir}/mod/infer/test-unit"/>
+      <testng workingDir="${build.dir}/mod/infer/test-unit"
+              outputdir="${build.dir}/mod/infer/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.infer.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/infer/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/infer/classes/test"/>
+            <pathelement location="${build.dir}/mod/infer/classes/main"/>
+            <pathelement location="mod/infer/src/test"/>
+            <pathelement location="mod/infer/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="mod/resolver/src/test"/>
+            <pathelement location="mod/resolver/src/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="mod/datatype/src/test"/>
+            <pathelement location="mod/datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="mod/xsd-datatype/src/test"/>
+            <pathelement location="mod/xsd-datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.infer.services"/>
+   <target name="mod.jaxp.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main">
+      <mkdir dir="${build.dir}/mod/jaxp/classes/main"/>
+      <javac destdir="${build.dir}/mod/jaxp/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/jaxp/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/jaxp/classes/main">
+         <fileset dir="mod/jaxp/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.jaxp.compile-test"
+           depends="mod.jaxp.compile-main,mod.util.compile-test,mod.resolver.compile-test">
+      <mkdir dir="${build.dir}/mod/jaxp/classes/test"/>
+   </target>
+   <target name="mod.jaxp.jar" depends="mod.jaxp.compile-main">
+      <jar jarfile="${build.dir}/jaxp.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.jaxp.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/jaxp/src.zip">
+         <fileset dir="mod/jaxp/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.jaxp.test" depends="dummy"/>
+   <target name="mod.jaxp.services"/>
+   <target name="mod.jing.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.catalog.compile-main,mod.regex.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main,mod.jaxp.compile-main,mod.rng-jaxp.compile-main,mod.rng-validate.compile-main,mod.nvdl.compile-main,mod.schematron.compile-main,mod.xerces.compile-main,mod.picl.compile-main,mod.rng-jarv.compile-main,mod.validate.compile-main">
+      <mkdir dir="${build.dir}/mod/jing/classes/main"/>
+   </target>
+   <target name="mod.jing.compile-test"
+           depends="mod.jing.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.catalog.compile-test,mod.regex.compile-test,mod.datatype.compile-test,mod.xsd-datatype.compile-test,mod.rng-parse.compile-test,mod.pattern.compile-test,mod.jaxp.compile-test,mod.rng-jaxp.compile-test,mod.rng-validate.compile-test,mod.nvdl.compile-test,mod.schematron.compile-test,mod.xerces.compile-test,mod.picl.compile-test,mod.rng-jarv.compile-test,mod.validate.compile-test">
+      <mkdir dir="${build.dir}/mod/jing/classes/test"/>
+   </target>
+   <target name="mod.jing.jar" depends="mod.jing.compile-main">
+      <jar jarfile="${build.dir}/jing.jar" duplicate="fail">
+         <manifest>
+            <attribute name="Main-Class" value="com/thaiopensource/relaxng/util/Driver"/>
+            <attribute name="Class-Path"
+                       value="xercesImpl${xercesImpl-version}.jar xml-apis${xml-apis-version}.jar saxon${saxon-version}.jar xalan${xalan-version}.jar isorelax${isorelax-version}.jar resolver${resolver-version}.jar"/>
+         </manifest>
+         <service type="com.thaiopensource.datatype.xsd.regex.RegexEngine">
+            <provider classname="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+            <provider classname="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
+         </service>
+         <service type="org.relaxng.datatype.DatatypeLibraryFactory">
+            <provider classname="com.thaiopensource.datatype.xsd.DatatypeLibraryFactoryImpl"/>
+         </service>
+         <service type="org.iso_relax.verifier.VerifierFactoryLoader">
+            <provider classname="com.thaiopensource.relaxng.jarv.VerifierFactoryLoaderImpl"/>
+         </service>
+         <service type="com.thaiopensource.validate.SchemaReaderFactory">
+            <provider classname="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.schematron.OldSaxonSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.schematron.XalanSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.schematron.SchematronSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.xerces.XsdSchemaReaderFactory"/>
+            <provider classname="com.thaiopensource.validate.jarv.JarvSchemaReaderFactory"/>
+         </service>
+         <service type="com.thaiopensource.validate.auto.SchemaReceiverFactory">
+            <provider classname="com.thaiopensource.validate.rng.SAXSchemaReceiverFactory"/>
+            <provider classname="com.thaiopensource.validate.nvdl.NvdlSchemaReceiverFactory"/>
+            <provider classname="com.thaiopensource.validate.nrl.NrlSchemaReceiverFactory"/>
+            <provider classname="com.thaiopensource.validate.mns.MnsSchemaReceiverFactory"/>
+            <provider classname="com.thaiopensource.validate.picl.PiclSchemaReceiverFactory"/>
+            <provider classname="com.thaiopensource.validate.auto.SchemaReaderLoaderSchemaReceiverFactory"/>
+         </service>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/catalog/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/pattern/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/nvdl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/schematron/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xerces/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/picl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-jarv/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.jing.srczip" depends="init,mod.regex.gen,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/jing/src.zip">
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/catalog/src/main" includes="**/*.java"/>
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/pattern/src/main" includes="**/*.java"/>
+         <fileset dir="mod/jaxp/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-jaxp/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/nvdl/src/main" includes="**/*.java"/>
+         <fileset dir="mod/schematron/src/main" includes="**/*.java"/>
+         <fileset dir="mod/xerces/src/main" includes="**/*.java"/>
+         <fileset dir="mod/picl/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-jarv/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.jing.test" depends="dummy"/>
+   <target name="mod.jing.services"/>
+   <target name="mod.nvdl.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
+      <mkdir dir="${build.dir}/mod/nvdl/classes/main"/>
+      <javac destdir="${build.dir}/mod/nvdl/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/nvdl/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/validate/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/nvdl/classes/main">
+         <fileset dir="mod/nvdl/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.nvdl.compile-test"
+           depends="mod.nvdl.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.validate.compile-test,mod.rng-validate.compile-test">
+      <mkdir dir="${build.dir}/mod/nvdl/classes/test"/>
+   </target>
+   <target name="mod.nvdl.jar" depends="mod.nvdl.compile-main">
+      <jar jarfile="${build.dir}/nvdl.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/nvdl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.nvdl.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/nvdl/src.zip">
+         <fileset dir="mod/nvdl/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.nvdl.test"
+           depends="dummy,mod.nvdl.test-mns,mod.nvdl.test-nrl,mod.nvdl.test-nvdl"/>
+   <target name="mod.nvdl.test-mns"
+           depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-mns">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/nvdl/test-mns/out.log"/>
+         <arg value="${build.dir}/mod/nvdl/test-mns"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.nvdl.split-mns"
+           depends="mod.nvdl.uptodate-split-mns,jing-jar"
+           unless="mod.nvdl.uptodate-split-mns">
+      <jing rngfile="test/mnstest.rng" file="mod/nvdl/test/mnstest.xml"/>
+      <delete dir="${build.dir}/mod/nvdl/test-mns"/>
+      <mkdir dir="${build.dir}/mod/nvdl/test-mns"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-mns/stamp"
+            in="mod/nvdl/test/mnstest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/nvdl/test-mns"/>
+      </xslt>
+   </target>
+   <target name="mod.nvdl.uptodate-split-mns">
+      <uptodate property="mod.nvdl.uptodate-split-mns"
+                targetfile="${build.dir}/mod/nvdl/test-mns/stamp"
+                srcfile="mod/nvdl/test/mnstest.xml"/>
+   </target>
+   <target name="mod.nvdl.test-nrl"
+           depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-nrl">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/nvdl/test-nrl/out.log"/>
+         <arg value="${build.dir}/mod/nvdl/test-nrl"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.nvdl.split-nrl"
+           depends="mod.nvdl.uptodate-split-nrl,jing-jar"
+           unless="mod.nvdl.uptodate-split-nrl">
+      <jing rngfile="test/nrltest.rng" file="mod/nvdl/test/nrltest.xml"/>
+      <delete dir="${build.dir}/mod/nvdl/test-nrl"/>
+      <mkdir dir="${build.dir}/mod/nvdl/test-nrl"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-nrl/stamp"
+            in="mod/nvdl/test/nrltest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/nvdl/test-nrl"/>
+      </xslt>
+   </target>
+   <target name="mod.nvdl.uptodate-split-nrl">
+      <uptodate property="mod.nvdl.uptodate-split-nrl"
+                targetfile="${build.dir}/mod/nvdl/test-nrl/stamp"
+                srcfile="mod/nvdl/test/nrltest.xml"/>
+   </target>
+   <target name="mod.nvdl.test-nvdl"
+           depends="mod.nvdl.compile-test,mod.jing.jar,mod.nvdl.split-nvdl">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/nvdl/test-nvdl/out.log"/>
+         <arg value="${build.dir}/mod/nvdl/test-nvdl"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.nvdl.split-nvdl"
+           depends="mod.nvdl.uptodate-split-nvdl,jing-jar"
+           unless="mod.nvdl.uptodate-split-nvdl">
+      <jing rngfile="mod/nvdl/test/nvdltest.rng" file="mod/nvdl/test/nvdltest.xml"/>
+      <delete dir="${build.dir}/mod/nvdl/test-nvdl"/>
+      <mkdir dir="${build.dir}/mod/nvdl/test-nvdl"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/nvdl/test-nvdl/stamp"
+            in="mod/nvdl/test/nvdltest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/nvdl/test-nvdl"/>
+      </xslt>
+   </target>
+   <target name="mod.nvdl.uptodate-split-nvdl">
+      <uptodate property="mod.nvdl.uptodate-split-nvdl"
+                targetfile="${build.dir}/mod/nvdl/test-nvdl/stamp"
+                srcfile="mod/nvdl/test/nvdltest.xml"/>
+   </target>
+   <target name="mod.nvdl.services">
+      <mkdir dir="${build.dir}/mod/nvdl/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/nvdl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/nvdl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.nvdl.NvdlSchemaReceiverFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/nvdl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.nrl.NrlSchemaReceiverFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/nvdl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.mns.MnsSchemaReceiverFactory${line.separator}"/>
+   </target>
+   <target name="mod.pattern.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main">
+      <mkdir dir="${build.dir}/mod/pattern/classes/main"/>
+      <javac destdir="${build.dir}/mod/pattern/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/pattern/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/pattern/classes/main">
+         <fileset dir="mod/pattern/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.pattern.compile-test"
+           depends="mod.pattern.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test,mod.rng-parse.compile-test">
+      <mkdir dir="${build.dir}/mod/pattern/classes/test"/>
+      <javac destdir="${build.dir}/mod/pattern/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/pattern/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.pattern.jar" depends="mod.pattern.compile-main">
+      <jar jarfile="${build.dir}/pattern.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/pattern/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.pattern.srczip" depends="init,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/pattern/src.zip">
+         <fileset dir="mod/pattern/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.pattern.test" depends="dummy,mod.pattern.test-unit"/>
+   <target name="mod.pattern.test-unit" depends="mod.pattern.compile-test">
+      <mkdir dir="${build.dir}/mod/pattern/test-unit"/>
+      <testng workingDir="${build.dir}/mod/pattern/test-unit"
+              outputdir="${build.dir}/mod/pattern/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.pattern.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/pattern/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/pattern/classes/test"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="mod/pattern/src/test"/>
+            <pathelement location="mod/pattern/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="mod/resolver/src/test"/>
+            <pathelement location="mod/resolver/src/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="mod/datatype/src/test"/>
+            <pathelement location="mod/datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="mod/rng-parse/src/test"/>
+            <pathelement location="mod/rng-parse/src/main"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.pattern.services"/>
+   <target name="mod.picl.compile-main"
+           depends="init,mod.util.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
+      <mkdir dir="${build.dir}/mod/picl/classes/main"/>
+      <javac destdir="${build.dir}/mod/picl/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/picl/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/validate/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/picl/classes/main">
+         <fileset dir="mod/picl/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.picl.compile-test"
+           depends="mod.picl.compile-main,mod.util.compile-test,mod.validate.compile-test,mod.rng-validate.compile-test">
+      <mkdir dir="${build.dir}/mod/picl/classes/test"/>
+   </target>
+   <target name="mod.picl.jar" depends="mod.picl.compile-main">
+      <jar jarfile="${build.dir}/picl.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/picl/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.picl.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/picl/src.zip">
+         <fileset dir="mod/picl/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.picl.test" depends="dummy,mod.picl.test-picl"/>
+   <target name="mod.picl.test-picl"
+           depends="mod.picl.compile-test,mod.jing.jar,mod.picl.split-picl">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/picl/test-picl/out.log"/>
+         <arg value="${build.dir}/mod/picl/test-picl"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.picl.split-picl"
+           depends="mod.picl.uptodate-split-picl,jing-jar"
+           unless="mod.picl.uptodate-split-picl">
+      <jing rngfile="test/picltest.nrl" file="mod/picl/test/picltest.xml"/>
+      <delete dir="${build.dir}/mod/picl/test-picl"/>
+      <mkdir dir="${build.dir}/mod/picl/test-picl"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/picl/test-picl/stamp"
+            in="mod/picl/test/picltest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/picl/test-picl"/>
+      </xslt>
+   </target>
+   <target name="mod.picl.uptodate-split-picl">
+      <uptodate property="mod.picl.uptodate-split-picl"
+                targetfile="${build.dir}/mod/picl/test-picl/stamp"
+                srcfile="mod/picl/test/picltest.xml"/>
+   </target>
+   <target name="mod.picl.services">
+      <mkdir dir="${build.dir}/mod/picl/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/picl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/picl/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.picl.PiclSchemaReceiverFactory${line.separator}"/>
+   </target>
+   <target name="mod.regex-gen.compile-main" depends="init,mod.util.compile-main">
+      <mkdir dir="${build.dir}/mod/regex-gen/classes/main"/>
+      <javac destdir="${build.dir}/mod/regex-gen/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/regex-gen/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/regex-gen/classes/main">
+         <fileset dir="mod/regex-gen/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.regex-gen.compile-test"
+           depends="mod.regex-gen.compile-main,mod.util.compile-test">
+      <mkdir dir="${build.dir}/mod/regex-gen/classes/test"/>
+   </target>
+   <target name="mod.regex-gen.jar" depends="mod.regex-gen.compile-main">
+      <jar jarfile="${build.dir}/regex-gen.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/regex-gen/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.regex-gen.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/regex-gen/src.zip">
+         <fileset dir="mod/regex-gen/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.regex-gen.test" depends="dummy"/>
+   <target name="mod.regex-gen.services"/>
+   <target name="mod.regex.gen"
+           depends="mod.regex.check-gen"
+           unless="mod.regex.gen-ok">
+      <mkdir dir="${build.dir}/mod/regex/gensrc/main/com/thaiopensource/datatype/xsd/regex/java"/>
+      <java classname="com.thaiopensource.datatype.xsd.regex.java.gen.NamingExceptionsGen"
+            fork="yes"
+            failonerror="yes">
+	        <arg value="com.thaiopensource.datatype.xsd.regex.java.NamingExceptions"/>
+	        <arg value="${build.dir}/mod/regex/gensrc/main"/>
+	        <classpath>
+	           <pathelement location="${build.dir}/mod/regex-gen/classes/main"/>
+	           <pathelement location="${build.dir}/mod/util/classes/main"/>
+	        </classpath>
+      </java>
+      <java classname="com.thaiopensource.datatype.xsd.regex.java.gen.CategoriesGen"
+            fork="yes"
+            failonerror="yes">
+	        <arg value="com.thaiopensource.datatype.xsd.regex.java.Categories"/>
+	        <arg value="${build.dir}/mod/regex/gensrc/main"/>
+	        <arg value="lib/UnicodeData-3.1.0.txt"/>
+	        <classpath>
+	           <pathelement location="${build.dir}/mod/regex-gen/classes/main"/>
+	           <pathelement location="${build.dir}/mod/util/classes/main"/>
+	        </classpath>
+      </java>
+    </target>
+   <target name="mod.regex.check-gen" depends="mod.regex-gen.compile-main">
+      <uptodate property="mod.regex.gen-ok"
+                targetfile="${build.dir}/mod/regex/gensrc/main/com/thaiopensource/datatype/xsd/regex/java/Categories.java">
+	        <srcfiles dir="${build.dir}/mod/regex-gen/classes/main" includes="**/*.class"/>
+      </uptodate>
+    </target>
+   <target name="mod.regex.compile-main"
+           depends="init,mod.regex.gen,mod.util.compile-main">
+      <mkdir dir="${build.dir}/mod/regex/classes/main"/>
+      <javac destdir="${build.dir}/mod/regex/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/regex/gensrc/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/regex/classes/main">
+         <fileset dir="mod/regex/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.regex.compile-test"
+           depends="mod.regex.compile-main,mod.util.compile-test">
+      <mkdir dir="${build.dir}/mod/regex/classes/test"/>
+      <javac destdir="${build.dir}/mod/regex/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/regex/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.regex.jar" depends="mod.regex.compile-main">
+      <jar jarfile="${build.dir}/regex.jar" duplicate="fail">
+         <service type="com.thaiopensource.datatype.xsd.regex.RegexEngine">
+            <provider classname="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+            <provider classname="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
+         </service>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.regex.srczip" depends="init,mod.regex.gen">
+      <zip zipfile="${build.dir}/mod/regex/src.zip">
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.regex.test"
+           depends="dummy,mod.regex.test-xerces,mod.regex.test-java,mod.regex.test-naming,mod.regex.test-hard"/>
+   <target name="mod.regex.test-xerces" depends="mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/regex/test-xerces"/>
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
+         <arg value="mod/regex/test/regextest.xml"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.regex.test-java" depends="mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/regex/test-java"/>
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+         <arg value="mod/regex/test/regextest.xml"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.regex.test-naming" depends="mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/regex/test-naming"/>
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.NameTest"
+            fork="yes"
+            failonerror="yes">
+         <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.regex.test-hard" depends="mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/regex/test-hard"/>
+      <java classname="com.thaiopensource.datatype.xsd.regex.test.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+         <arg value="mod/regex/test/hardtest.xml"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.regex.services">
+      <mkdir dir="${build.dir}/mod/regex/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/regex/classes/main/META-INF/services/com.thaiopensource.datatype.xsd.regex.RegexEngine"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/regex/classes/main/META-INF/services/com.thaiopensource.datatype.xsd.regex.RegexEngine"
+            append="true"
+            message="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl${line.separator}"/>
+      <echo file="${build.dir}/mod/regex/classes/main/META-INF/services/com.thaiopensource.datatype.xsd.regex.RegexEngine"
+            append="true"
+            message="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl${line.separator}"/>
+   </target>
+   <target name="mod.resolver.compile-main" depends="init">
+      <mkdir dir="${build.dir}/mod/resolver/classes/main"/>
+      <javac destdir="${build.dir}/mod/resolver/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/resolver/src/main"/>
+         </src>
+         <classpath/>
+      </javac>
+      <copy todir="${build.dir}/mod/resolver/classes/main">
+         <fileset dir="mod/resolver/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.resolver.compile-test" depends="mod.resolver.compile-main">
+      <mkdir dir="${build.dir}/mod/resolver/classes/test"/>
+   </target>
+   <target name="mod.resolver.jar" depends="mod.resolver.compile-main">
+      <jar jarfile="${build.dir}/resolver.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.resolver.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/resolver/src.zip">
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.resolver.test" depends="dummy"/>
+   <target name="mod.resolver.services"/>
+   <target name="mod.rng-jarv.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main">
+      <mkdir dir="${build.dir}/mod/rng-jarv/classes/main"/>
+      <javac destdir="${build.dir}/mod/rng-jarv/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/rng-jarv/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="lib/isorelax${isorelax-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/rng-jarv/classes/main">
+         <fileset dir="mod/rng-jarv/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.rng-jarv.compile-test"
+           depends="mod.rng-jarv.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test,mod.rng-parse.compile-test,mod.pattern.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-jarv/classes/test"/>
+   </target>
+   <target name="mod.rng-jarv.jar" depends="mod.rng-jarv.compile-main">
+      <jar jarfile="${build.dir}/rng-jarv.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/rng-jarv/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/pattern/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.rng-jarv.srczip" depends="init,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/rng-jarv/src.zip">
+         <fileset dir="mod/rng-jarv/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/pattern/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.rng-jarv.test" depends="dummy"/>
+   <target name="mod.rng-jarv.services">
+      <mkdir dir="${build.dir}/mod/rng-jarv/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/rng-jarv/classes/main/META-INF/services/org.iso_relax.verifier.VerifierFactoryLoader"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/rng-jarv/classes/main/META-INF/services/org.iso_relax.verifier.VerifierFactoryLoader"
+            append="true"
+            message="com.thaiopensource.relaxng.jarv.VerifierFactoryLoaderImpl${line.separator}"/>
+   </target>
+   <target name="mod.rng-jaxp.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.regex.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main,mod.jaxp.compile-main">
+      <mkdir dir="${build.dir}/mod/rng-jaxp/classes/main"/>
+      <javac destdir="${build.dir}/mod/rng-jaxp/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/rng-jaxp/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="${build.dir}/mod/jaxp/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/rng-jaxp/classes/main">
+         <fileset dir="mod/rng-jaxp/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.rng-jaxp.compile-test"
+           depends="mod.rng-jaxp.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test,mod.xsd-datatype.compile-test,mod.regex.compile-test,mod.rng-parse.compile-test,mod.pattern.compile-test,mod.jaxp.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-jaxp/classes/test"/>
+      <javac destdir="${build.dir}/mod/rng-jaxp/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/rng-jaxp/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/rng-jaxp/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/test"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="${build.dir}/mod/jaxp/classes/test"/>
+            <pathelement location="${build.dir}/mod/jaxp/classes/main"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.rng-jaxp.jar" depends="mod.rng-jaxp.compile-main">
+      <jar jarfile="${build.dir}/rng-jaxp.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/rng-jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/pattern/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/jaxp/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.rng-jaxp.srczip"
+           depends="init,mod.regex.gen,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/rng-jaxp/src.zip">
+         <fileset dir="mod/rng-jaxp/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/pattern/src/main" includes="**/*.java"/>
+         <fileset dir="mod/jaxp/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.rng-jaxp.test" depends="dummy,mod.rng-jaxp.test-unit"/>
+   <target name="mod.rng-jaxp.test-unit" depends="mod.rng-jaxp.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-jaxp/test-unit"/>
+      <testng workingDir="${build.dir}/mod/rng-jaxp/test-unit"
+              outputdir="${build.dir}/mod/rng-jaxp/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.rng-jaxp.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/rng-jaxp/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/rng-jaxp/classes/test"/>
+            <pathelement location="${build.dir}/mod/rng-jaxp/classes/main"/>
+            <pathelement location="mod/rng-jaxp/src/test"/>
+            <pathelement location="mod/rng-jaxp/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/test"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="mod/resolver/src/test"/>
+            <pathelement location="mod/resolver/src/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="mod/datatype/src/test"/>
+            <pathelement location="mod/datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="mod/xsd-datatype/src/test"/>
+            <pathelement location="mod/xsd-datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/test"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="mod/rng-parse/src/test"/>
+            <pathelement location="mod/rng-parse/src/main"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/test"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="mod/pattern/src/test"/>
+            <pathelement location="mod/pattern/src/main"/>
+            <pathelement location="${build.dir}/mod/jaxp/classes/test"/>
+            <pathelement location="${build.dir}/mod/jaxp/classes/main"/>
+            <pathelement location="mod/jaxp/src/test"/>
+            <pathelement location="mod/jaxp/src/main"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.rng-jaxp.services"/>
+   <target name="mod.rng-parse.gen">
+      <mkdir dir="${build.dir}/mod/rng-parse/gensrc/main/com/thaiopensource/relaxng/parse/compact"/>
+      <javacc target="mod/rng-parse/src/main/com/thaiopensource/relaxng/parse/compact/CompactSyntax.jj"
+              outputdirectory="${build.dir}/mod/rng-parse/gensrc/main/com/thaiopensource/relaxng/parse/compact"
+              javacchome="${javacc.dir}"/>
+      <delete quiet="true">
+	        <fileset dir="${build.dir}/mod/rng-parse/gensrc/main/com/thaiopensource/relaxng/parse/compact"
+                  includes="JavaCharStream.java"/>
+      </delete>
+      <replace file="${build.dir}/mod/rng-parse/gensrc/main/com/thaiopensource/relaxng/parse/compact/CompactSyntaxTokenManager.java"
+               token="java.io.IOException"
+               value="EOFException"/>
+    </target>
+   <target name="mod.rng-parse.compile-main"
+           depends="init,mod.rng-parse.gen,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main">
+      <mkdir dir="${build.dir}/mod/rng-parse/classes/main"/>
+      <javac destdir="${build.dir}/mod/rng-parse/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/rng-parse/src/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/gensrc/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/rng-parse/classes/main">
+         <fileset dir="mod/rng-parse/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.rng-parse.compile-test"
+           depends="mod.rng-parse.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-parse/classes/test"/>
+   </target>
+   <target name="mod.rng-parse.jar" depends="mod.rng-parse.compile-main">
+      <jar jarfile="${build.dir}/rng-parse.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.rng-parse.srczip" depends="init,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/rng-parse/src.zip">
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.rng-parse.test" depends="dummy"/>
+   <target name="mod.rng-parse.services"/>
+   <target name="mod.rng-schema.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main">
+      <mkdir dir="${build.dir}/mod/rng-schema/classes/main"/>
+      <javac destdir="${build.dir}/mod/rng-schema/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/rng-schema/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/rng-schema/classes/main">
+         <fileset dir="mod/rng-schema/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.rng-schema.compile-test"
+           depends="mod.rng-schema.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test,mod.rng-parse.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-schema/classes/test"/>
+   </target>
+   <target name="mod.rng-schema.jar" depends="mod.rng-schema.compile-main">
+      <jar jarfile="${build.dir}/rng-schema.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.rng-schema.srczip" depends="init,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/rng-schema/src.zip">
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.rng-schema.test" depends="dummy,mod.rng-schema.test-compact"/>
+   <target name="mod.rng-schema.test-compact"
+           depends="mod.rng-schema.compile-test,mod.trang.jar,mod.rng-schema.split-compact">
+      <java classname="com.thaiopensource.relaxng.translate.test.CompactTestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/rng-schema/test-compact/out.log"/>
+         <arg value="${build.dir}/mod/rng-schema/test-compact"/>
+         <arg value="xml"/>
+         <classpath>
+            <pathelement location="${build.dir}/trang.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.rng-schema.split-compact"
+           depends="mod.rng-schema.uptodate-split-compact,jing-jar"
+           unless="mod.rng-schema.uptodate-split-compact">
+      <jing rngfile="trang/test/compacttest.rnc"
+            file="mod/rng-schema/test/compacttest.xml"
+            compactsyntax="true"/>
+      <delete dir="${build.dir}/mod/rng-schema/test-compact"/>
+      <mkdir dir="${build.dir}/mod/rng-schema/test-compact"/>
+      <xslt style="trang/test/compactsplit.xsl"
+            out="${build.dir}/mod/rng-schema/test-compact/stamp"
+            in="mod/rng-schema/test/compacttest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/rng-schema/test-compact"/>
+      </xslt>
+   </target>
+   <target name="mod.rng-schema.uptodate-split-compact">
+      <uptodate property="mod.rng-schema.uptodate-split-compact"
+                targetfile="${build.dir}/mod/rng-schema/test-compact/stamp"
+                srcfile="mod/rng-schema/test/compacttest.xml"/>
+   </target>
+   <target name="mod.rng-schema.services"/>
+   <target name="mod.rng-validate.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.catalog.compile-main,mod.datatype.compile-main,mod.rng-parse.compile-main,mod.pattern.compile-main,mod.validate.compile-main">
+      <mkdir dir="${build.dir}/mod/rng-validate/classes/main"/>
+      <javac destdir="${build.dir}/mod/rng-validate/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/rng-validate/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/catalog/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/pattern/classes/main"/>
+            <pathelement location="${build.dir}/mod/validate/classes/main"/>
+            <pathelement location="lib/ant${ant-version}.jar"/>
+            <pathelement location="lib/resolver${resolver-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/rng-validate/classes/main">
+         <fileset dir="mod/rng-validate/src/main" includes="**/resources/*"/>
+      </copy>
+      <mkdir dir="${build.dir}/mod/rng-validate/classes/main/com/thaiopensource/relaxng/util/resources"/>
+      <echo file="${build.dir}/mod/rng-validate/classes/main/com/thaiopensource/relaxng/util/resources/Version.properties"
+            message="version=${version}&#xA;"/>
+   </target>
+   <target name="mod.rng-validate.compile-test"
+           depends="mod.rng-validate.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.catalog.compile-test,mod.datatype.compile-test,mod.rng-parse.compile-test,mod.pattern.compile-test,mod.validate.compile-test">
+      <mkdir dir="${build.dir}/mod/rng-validate/classes/test"/>
+   </target>
+   <target name="mod.rng-validate.jar" depends="mod.rng-validate.compile-main">
+      <jar jarfile="${build.dir}/rng-validate.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/rng-validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/catalog/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/pattern/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.rng-validate.srczip" depends="init,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/rng-validate/src.zip">
+         <fileset dir="mod/rng-validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/catalog/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/pattern/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.rng-validate.test" depends="dummy,mod.rng-validate.test-spec"/>
+   <target name="mod.rng-validate.test-spec"
+           depends="mod.rng-validate.compile-test,mod.jing.jar,mod.rng-validate.split-spec">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/rng-validate/test-spec/out.log"/>
+         <arg value="${build.dir}/mod/rng-validate/test-spec"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.rng-validate.split-spec"
+           depends="mod.rng-validate.uptodate-split-spec,jing-jar"
+           unless="mod.rng-validate.uptodate-split-spec">
+      <jing rngfile="eg/testSuite.rng" file="mod/rng-validate/test/spectest.xml"/>
+      <delete dir="${build.dir}/mod/rng-validate/test-spec"/>
+      <mkdir dir="${build.dir}/mod/rng-validate/test-spec"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/rng-validate/test-spec/stamp"
+            in="mod/rng-validate/test/spectest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/rng-validate/test-spec"/>
+      </xslt>
+   </target>
+   <target name="mod.rng-validate.uptodate-split-spec">
+      <uptodate property="mod.rng-validate.uptodate-split-spec"
+                targetfile="${build.dir}/mod/rng-validate/test-spec/stamp"
+                srcfile="mod/rng-validate/test/spectest.xml"/>
+   </target>
+   <target name="mod.rng-validate.services">
+      <mkdir dir="${build.dir}/mod/rng-validate/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/rng-validate/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/rng-validate/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.rng.SAXSchemaReceiverFactory${line.separator}"/>
+   </target>
+   <target name="mod.schematron.compile-res">
+      <property name="mod.schematron.respackage"
+                value="com/thaiopensource/validate/schematron/resources"/>
+      <property name="mod.schematron.resdir"
+                value="${build.dir}/mod/schematron/classes/main/${mod.schematron.respackage}"/>
+      <mkdir dir="${mod.schematron.resdir}"/>
+      <xslt style="mod/schematron/lib/xsltc-fixup.xsl"
+            in="mod/schematron/src/main/${mod.schematron.respackage}/schematron.xsl"
+            out="${mod.schematron.resdir}/schematron-xsltc.xsl">
+	        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+      </xslt>
+      <xslt style="mod/schematron/lib/xsltc-fixup.xsl"
+            in="mod/schematron/src/main/${mod.schematron.respackage}/iso-schematron.xsl"
+            out="${mod.schematron.resdir}/iso-schematron-xsltc.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+      </xslt>
+    </target>
+   <target name="mod.schematron.compile-main"
+           depends="init,mod.schematron.compile-res,mod.util.compile-main,mod.resolver.compile-main,mod.validate.compile-main,mod.rng-validate.compile-main">
+      <mkdir dir="${build.dir}/mod/schematron/classes/main"/>
+      <javac destdir="${build.dir}/mod/schematron/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/schematron/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/validate/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
+            <pathelement location="lib/xalan${xalan-version}.jar"/>
+            <pathelement location="lib/saxon${saxon-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/schematron/classes/main">
+         <fileset dir="mod/schematron/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.schematron.compile-test"
+           depends="mod.schematron.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.validate.compile-test,mod.rng-validate.compile-test">
+      <mkdir dir="${build.dir}/mod/schematron/classes/test"/>
+   </target>
+   <target name="mod.schematron.jar" depends="mod.schematron.compile-main">
+      <jar jarfile="${build.dir}/schematron.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/schematron/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.schematron.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/schematron/src.zip">
+         <fileset dir="mod/schematron/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.schematron.test"
+           depends="dummy,mod.schematron.test-saxon-old-sch,mod.schematron.test-saxon-iso-sch,mod.schematron.test-xalan,mod.schematron.test-jaxp"/>
+   <target name="mod.schematron.test-saxon-old-sch"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-old-sch">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/schematron/test-saxon-old-sch/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/saxon${saxon-version}.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.schematron.split-saxon-old-sch"
+           depends="mod.schematron.uptodate-split-saxon-old-sch,jing-jar"
+           unless="mod.schematron.uptodate-split-saxon-old-sch">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-saxon-old-sch/stamp"
+            in="mod/schematron/test/schematrontest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-saxon-old-sch"/>
+      </xslt>
+   </target>
+   <target name="mod.schematron.uptodate-split-saxon-old-sch">
+      <uptodate property="mod.schematron.uptodate-split-saxon-old-sch"
+                targetfile="${build.dir}/mod/schematron/test-saxon-old-sch/stamp"
+                srcfile="mod/schematron/test/schematrontest.xml"/>
+   </target>
+   <target name="mod.schematron.test-saxon-iso-sch"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-iso-sch">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/saxon${saxon-version}.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.schematron.split-saxon-iso-sch"
+           depends="mod.schematron.uptodate-split-saxon-iso-sch,jing-jar"
+           unless="mod.schematron.uptodate-split-saxon-iso-sch">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/isoschematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-saxon-iso-sch/stamp"
+            in="mod/schematron/test/isoschematrontest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-saxon-iso-sch"/>
+      </xslt>
+   </target>
+   <target name="mod.schematron.uptodate-split-saxon-iso-sch">
+      <uptodate property="mod.schematron.uptodate-split-saxon-iso-sch"
+                targetfile="${build.dir}/mod/schematron/test-saxon-iso-sch/stamp"
+                srcfile="mod/schematron/test/isoschematrontest.xml"/>
+   </target>
+   <target name="mod.schematron.test-xalan"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-xalan">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/schematron/test-xalan/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-xalan"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xalan${xalan-version}.jar"/>
+            <pathelement location="lib/serializer${-serializer-version}.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.schematron.split-xalan"
+           depends="mod.schematron.uptodate-split-xalan,jing-jar"
+           unless="mod.schematron.uptodate-split-xalan">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-xalan"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-xalan"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-xalan/stamp"
+            in="mod/schematron/test/schematrontest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-xalan"/>
+      </xslt>
+   </target>
+   <target name="mod.schematron.uptodate-split-xalan">
+      <uptodate property="mod.schematron.uptodate-split-xalan"
+                targetfile="${build.dir}/mod/schematron/test-xalan/stamp"
+                srcfile="mod/schematron/test/schematrontest.xml"/>
+   </target>
+   <target name="mod.schematron.test-jaxp"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-jaxp">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/schematron/test-jaxp/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-jaxp"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.schematron.split-jaxp"
+           depends="mod.schematron.uptodate-split-jaxp,jing-jar"
+           unless="mod.schematron.uptodate-split-jaxp">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/schematrontest.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-jaxp"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-jaxp"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-jaxp/stamp"
+            in="mod/schematron/test/schematrontest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/schematron/test-jaxp"/>
+      </xslt>
+   </target>
+   <target name="mod.schematron.uptodate-split-jaxp">
+      <uptodate property="mod.schematron.uptodate-split-jaxp"
+                targetfile="${build.dir}/mod/schematron/test-jaxp/stamp"
+                srcfile="mod/schematron/test/schematrontest.xml"/>
+   </target>
+   <target name="mod.schematron.services">
+      <mkdir dir="${build.dir}/mod/schematron/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.schematron.Xslt3SaxonSchemaReaderFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.schematron.NewSaxonSchemaReaderFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.schematron.OldSaxonSchemaReaderFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.schematron.XalanSchemaReaderFactory${line.separator}"/>
+      <echo file="${build.dir}/mod/schematron/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.schematron.SchematronSchemaReaderFactory${line.separator}"/>
+   </target>
+   <target name="mod.trang.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.catalog.compile-main,mod.regex.compile-main,mod.datatype.compile-main,mod.xsd-datatype.compile-main,mod.rng-parse.compile-main,mod.dtd-parse.compile-main,mod.infer.compile-main,mod.rng-schema.compile-main,mod.convert-from-xml.compile-main,mod.convert-to-xsd.compile-main,mod.convert-from-dtd.compile-main,mod.convert-to-dtd.compile-main">
+      <mkdir dir="${build.dir}/mod/trang/classes/main"/>
+      <javac destdir="${build.dir}/mod/trang/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/trang/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/catalog/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/dtd-parse/classes/main"/>
+            <pathelement location="${build.dir}/mod/infer/classes/main"/>
+            <pathelement location="${build.dir}/mod/rng-schema/classes/main"/>
+            <pathelement location="${build.dir}/mod/convert-from-xml/classes/main"/>
+            <pathelement location="${build.dir}/mod/convert-to-xsd/classes/main"/>
+            <pathelement location="${build.dir}/mod/convert-from-dtd/classes/main"/>
+            <pathelement location="${build.dir}/mod/convert-to-dtd/classes/main"/>
+            <pathelement location="lib/resolver${resolver-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/trang/classes/main">
+         <fileset dir="mod/trang/src/main" includes="**/resources/*"/>
+      </copy>
+      <mkdir dir="${build.dir}/mod/trang/classes/main/com/thaiopensource/relaxng/translate/resources"/>
+      <echo file="${build.dir}/mod/trang/classes/main/com/thaiopensource/relaxng/translate/resources/Version.properties"
+            message="version=${version}&#xA;"/>
+   </target>
+   <target name="mod.trang.compile-test"
+           depends="mod.trang.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.catalog.compile-test,mod.regex.compile-test,mod.datatype.compile-test,mod.xsd-datatype.compile-test,mod.rng-parse.compile-test,mod.dtd-parse.compile-test,mod.infer.compile-test,mod.rng-schema.compile-test,mod.convert-from-xml.compile-test,mod.convert-to-xsd.compile-test,mod.convert-from-dtd.compile-test,mod.convert-to-dtd.compile-test">
+      <mkdir dir="${build.dir}/mod/trang/classes/test"/>
+   </target>
+   <target name="mod.trang.jar" depends="mod.trang.compile-main">
+      <jar jarfile="${build.dir}/trang.jar" duplicate="fail">
+         <manifest>
+            <attribute name="Main-Class" value="com/thaiopensource/relaxng/translate/Driver"/>
+            <attribute name="Class-Path" value="resolver${resolver-version}.jar"/>
+         </manifest>
+         <service type="com.thaiopensource.datatype.xsd.regex.RegexEngine">
+            <provider classname="com.thaiopensource.datatype.xsd.regex.java.RegexEngineImpl"/>
+            <provider classname="com.thaiopensource.datatype.xsd.regex.xerces2.RegexEngineImpl"/>
+         </service>
+         <service type="org.relaxng.datatype.DatatypeLibraryFactory">
+            <provider classname="com.thaiopensource.datatype.xsd.DatatypeLibraryFactoryImpl"/>
+         </service>
+         <fileset dir="${build.dir}/mod/trang/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/catalog/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/dtd-parse/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/infer/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/rng-schema/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/convert-from-xml/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/convert-to-xsd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/convert-from-dtd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/convert-to-dtd/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.trang.srczip" depends="init,mod.regex.gen,mod.rng-parse.gen">
+      <zip zipfile="${build.dir}/mod/trang/src.zip">
+         <fileset dir="mod/trang/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/catalog/src/main" includes="**/*.java"/>
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-parse/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/rng-parse/gensrc/main" includes="**/*.java"/>
+         <fileset dir="mod/dtd-parse/src/main" includes="**/*.java"/>
+         <fileset dir="mod/infer/src/main" includes="**/*.java"/>
+         <fileset dir="mod/rng-schema/src/main" includes="**/*.java"/>
+         <fileset dir="mod/convert-from-xml/src/main" includes="**/*.java"/>
+         <fileset dir="mod/convert-to-xsd/src/main" includes="**/*.java"/>
+         <fileset dir="mod/convert-from-dtd/src/main" includes="**/*.java"/>
+         <fileset dir="mod/convert-to-dtd/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.trang.test" depends="dummy"/>
+   <target name="mod.trang.services"/>
+   <target name="mod.util.compile-main" depends="init">
+      <mkdir dir="${build.dir}/mod/util/classes/main"/>
+      <javac destdir="${build.dir}/mod/util/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/util/src/main"/>
+         </src>
+         <classpath/>
+      </javac>
+      <copy todir="${build.dir}/mod/util/classes/main">
+         <fileset dir="mod/util/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.util.compile-test" depends="mod.util.compile-main">
+      <mkdir dir="${build.dir}/mod/util/classes/test"/>
+      <javac destdir="${build.dir}/mod/util/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/util/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.util.jar" depends="mod.util.compile-main">
+      <jar jarfile="${build.dir}/util.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.util.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/util/src.zip">
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.util.test" depends="dummy,mod.util.test-unit"/>
+   <target name="mod.util.test-unit" depends="mod.util.compile-test">
+      <mkdir dir="${build.dir}/mod/util/test-unit"/>
+      <testng workingDir="${build.dir}/mod/util/test-unit"
+              outputdir="${build.dir}/mod/util/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.util.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/util/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.util.services"/>
+   <target name="mod.validate.compile-main"
+           depends="init,mod.util.compile-main,mod.resolver.compile-main,mod.datatype.compile-main">
+      <mkdir dir="${build.dir}/mod/validate/classes/main"/>
+      <javac destdir="${build.dir}/mod/validate/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/validate/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/resolver/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="lib/isorelax${isorelax-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/validate/classes/main">
+         <fileset dir="mod/validate/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.validate.compile-test"
+           depends="mod.validate.compile-main,mod.util.compile-test,mod.resolver.compile-test,mod.datatype.compile-test">
+      <mkdir dir="${build.dir}/mod/validate/classes/test"/>
+   </target>
+   <target name="mod.validate.jar" depends="mod.validate.compile-main">
+      <jar jarfile="${build.dir}/validate.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/resolver/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.validate.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/validate/src.zip">
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/resolver/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.validate.test" depends="dummy"/>
+   <target name="mod.validate.services">
+      <mkdir dir="${build.dir}/mod/validate/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/validate/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/validate/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.jarv.JarvSchemaReaderFactory${line.separator}"/>
+      <mkdir dir="${build.dir}/mod/validate/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/validate/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/validate/classes/main/META-INF/services/com.thaiopensource.validate.auto.SchemaReceiverFactory"
+            append="true"
+            message="com.thaiopensource.validate.auto.SchemaReaderLoaderSchemaReceiverFactory${line.separator}"/>
+   </target>
+   <target name="mod.xerces.compile-main"
+           depends="init,mod.util.compile-main,mod.validate.compile-main">
+      <mkdir dir="${build.dir}/mod/xerces/classes/main"/>
+      <javac destdir="${build.dir}/mod/xerces/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/xerces/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/validate/classes/main"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/xerces/classes/main">
+         <fileset dir="mod/xerces/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.xerces.compile-test"
+           depends="mod.xerces.compile-main,mod.util.compile-test,mod.validate.compile-test">
+      <mkdir dir="${build.dir}/mod/xerces/classes/test"/>
+   </target>
+   <target name="mod.xerces.jar" depends="mod.xerces.compile-main">
+      <jar jarfile="${build.dir}/xerces.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/xerces/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/validate/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.xerces.srczip" depends="init">
+      <zip zipfile="${build.dir}/mod/xerces/src.zip">
+         <fileset dir="mod/xerces/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/validate/src/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.xerces.test" depends="dummy"/>
+   <target name="mod.xerces.services">
+      <mkdir dir="${build.dir}/mod/xerces/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/xerces/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/xerces/classes/main/META-INF/services/com.thaiopensource.validate.SchemaReaderFactory"
+            append="true"
+            message="com.thaiopensource.validate.xerces.XsdSchemaReaderFactory${line.separator}"/>
+   </target>
+   <target name="mod.xsd-datatype.compile-main"
+           depends="init,mod.util.compile-main,mod.datatype.compile-main,mod.regex.compile-main">
+      <mkdir dir="${build.dir}/mod/xsd-datatype/classes/main"/>
+      <javac destdir="${build.dir}/mod/xsd-datatype/classes/main"
+             debug="true"
+             debuglevel="lines,source">
+         <src>
+            <pathelement location="mod/xsd-datatype/src/main"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+         </classpath>
+      </javac>
+      <copy todir="${build.dir}/mod/xsd-datatype/classes/main">
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/resources/*"/>
+      </copy>
+   </target>
+   <target name="mod.xsd-datatype.compile-test"
+           depends="mod.xsd-datatype.compile-main,mod.util.compile-test,mod.datatype.compile-test,mod.regex.compile-test">
+      <mkdir dir="${build.dir}/mod/xsd-datatype/classes/test"/>
+      <javac destdir="${build.dir}/mod/xsd-datatype/classes/test" debug="true">
+         <src>
+            <pathelement location="mod/xsd-datatype/src/test"/>
+         </src>
+         <classpath>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="lib/testng${testng-version}.jar"/>
+         </classpath>
+      </javac>
+   </target>
+   <target name="mod.xsd-datatype.jar" depends="mod.xsd-datatype.compile-main">
+      <jar jarfile="${build.dir}/xsd-datatype.jar" duplicate="fail">
+         <fileset dir="${build.dir}/mod/xsd-datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/util/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/datatype/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+         <fileset dir="${build.dir}/mod/regex/classes/main"
+                  includes="**/*.class,**/resources/*"/>
+      </jar>
+   </target>
+   <target name="mod.xsd-datatype.srczip" depends="init,mod.regex.gen">
+      <zip zipfile="${build.dir}/mod/xsd-datatype/src.zip">
+         <fileset dir="mod/xsd-datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/util/src/main" includes="**/*.java"/>
+         <fileset dir="mod/datatype/src/main" includes="**/*.java"/>
+         <fileset dir="mod/regex/src/main" includes="**/*.java"/>
+         <fileset dir="${build.dir}/mod/regex/gensrc/main" includes="**/*.java"/>
+      </zip>
+   </target>
+   <target name="mod.xsd-datatype.test"
+           depends="dummy,mod.xsd-datatype.test-xsd,mod.xsd-datatype.test-unit"/>
+   <target name="mod.xsd-datatype.test-xsd"
+           depends="mod.xsd-datatype.compile-test,mod.jing.jar,mod.xsd-datatype.split-xsd">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="${build.dir}/mod/xsd-datatype/test-xsd/out.log"/>
+         <arg value="${build.dir}/mod/xsd-datatype/test-xsd"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="lib/xercesImpl${xercesImpl-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.xsd-datatype.split-xsd"
+           depends="mod.xsd-datatype.uptodate-split-xsd,jing-jar"
+           unless="mod.xsd-datatype.uptodate-split-xsd">
+      <jing rngfile="test/xsdtest.rnc"
+            file="mod/xsd-datatype/test/xsdtest.xml"
+            compactsyntax="true"/>
+      <delete dir="${build.dir}/mod/xsd-datatype/test-xsd"/>
+      <mkdir dir="${build.dir}/mod/xsd-datatype/test-xsd"/>
+      <xslt style="mod/xsd-datatype/test/xsdtest.xsl"
+            in="mod/xsd-datatype/test/xsdtest.xml"
+            out="${build.dir}/mod/xsd-datatype/test-xsd/xsdtest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+      </xslt>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/xsd-datatype/test-xsd/stamp"
+            in="${build.dir}/mod/xsd-datatype/test-xsd/xsdtest.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir" expression="${build.dir}/mod/xsd-datatype/test-xsd"/>
+      </xslt>
+   </target>
+   <target name="mod.xsd-datatype.uptodate-split-xsd">
+      <uptodate property="mod.xsd-datatype.uptodate-split-xsd"
+                targetfile="${build.dir}/mod/xsd-datatype/test-xsd/stamp"
+                srcfile="mod/xsd-datatype/test/xsdtest.xml"/>
+   </target>
+   <target name="mod.xsd-datatype.test-unit"
+           depends="mod.xsd-datatype.compile-test">
+      <mkdir dir="${build.dir}/mod/xsd-datatype/test-unit"/>
+      <testng workingDir="${build.dir}/mod/xsd-datatype/test-unit"
+              outputdir="${build.dir}/mod/xsd-datatype/test-unit/report"
+              haltonfailure="true"
+              suiteName="mod.xsd-datatype.test-unit"
+              listeners="org.testng.reporters.DotTestListener">
+         <classfileset dir="${build.dir}/mod/xsd-datatype/classes/test" includes="**/*.class"/>
+         <classpath>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/xsd-datatype/classes/main"/>
+            <pathelement location="mod/xsd-datatype/src/test"/>
+            <pathelement location="mod/xsd-datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/util/classes/test"/>
+            <pathelement location="${build.dir}/mod/util/classes/main"/>
+            <pathelement location="mod/util/src/test"/>
+            <pathelement location="mod/util/src/main"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/test"/>
+            <pathelement location="${build.dir}/mod/datatype/classes/main"/>
+            <pathelement location="mod/datatype/src/test"/>
+            <pathelement location="mod/datatype/src/main"/>
+            <pathelement location="${build.dir}/mod/regex/classes/test"/>
+            <pathelement location="${build.dir}/mod/regex/classes/main"/>
+            <pathelement location="mod/regex/src/test"/>
+            <pathelement location="mod/regex/src/main"/>
+         </classpath>
+      </testng>
+   </target>
+   <target name="mod.xsd-datatype.services">
+      <mkdir dir="${build.dir}/mod/xsd-datatype/classes/main/META-INF/services"/>
+      <delete file="${build.dir}/mod/xsd-datatype/classes/main/META-INF/services/org.relaxng.datatype.DatatypeLibraryFactory"
+              quiet="true"
+              failonerror="false"/>
+      <echo file="${build.dir}/mod/xsd-datatype/classes/main/META-INF/services/org.relaxng.datatype.DatatypeLibraryFactory"
+            append="true"
+            message="com.thaiopensource.datatype.xsd.DatatypeLibraryFactoryImpl${line.separator}"/>
+   </target>
+   <target name="gen" depends="init,mod.regex.gen,mod.rng-parse.gen"/>
+   <target name="compile" depends="mod.jing.compile-main,mod.trang.compile-main"/>
+   <target name="jar" depends="mod.dtdinst.jar,mod.jing.jar,mod.trang.jar"/>
+   <target name="srczip"
+           depends="mod.dtdinst.srczip,mod.jing.srczip,mod.trang.srczip"/>
+   <target name="jing-jar" depends="mod.jing.jar">
+      <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+         </classpath>
+      </taskdef>
+   </target>
+   <target name="test"
+           depends="init,mod.catalog.test,mod.convert-from-dtd.test,mod.convert-from-xml.test,mod.convert-to-dtd.test,mod.convert-to-xsd.test,mod.datatype.test,mod.dtd-parse.test,mod.dtdinst.test,mod.infer.test,mod.jaxp.test,mod.jing.test,mod.nvdl.test,mod.pattern.test,mod.picl.test,mod.regex-gen.test,mod.regex.test,mod.resolver.test,mod.rng-jarv.test,mod.rng-jaxp.test,mod.rng-parse.test,mod.rng-schema.test,mod.rng-validate.test,mod.schematron.test,mod.trang.test,mod.util.test,mod.validate.test,mod.xerces.test,mod.xsd-datatype.test"/>
+   <target name="services"
+           depends="init,mod.catalog.services,mod.convert-from-dtd.services,mod.convert-from-xml.services,mod.convert-to-dtd.services,mod.convert-to-xsd.services,mod.datatype.services,mod.dtd-parse.services,mod.dtdinst.services,mod.infer.services,mod.jaxp.services,mod.jing.services,mod.nvdl.services,mod.pattern.services,mod.picl.services,mod.regex-gen.services,mod.regex.services,mod.resolver.services,mod.rng-jarv.services,mod.rng-jaxp.services,mod.rng-parse.services,mod.rng-schema.services,mod.rng-validate.services,mod.schematron.services,mod.trang.services,mod.util.services,mod.validate.services,mod.xerces.services,mod.xsd-datatype.services"/>
+</project>
