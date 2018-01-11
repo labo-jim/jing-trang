@@ -8,6 +8,7 @@ import com.thaiopensource.util.UriOrFile;
 import com.thaiopensource.util.Version;
 import com.thaiopensource.validate.Flag;
 import com.thaiopensource.validate.FlagOption;
+import com.thaiopensource.validate.JSONObjectOption;
 import com.thaiopensource.validate.OptionArgumentException;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.StringOption;
@@ -19,7 +20,6 @@ import com.thaiopensource.validate.rng.CompactSchemaReader;
 import com.thaiopensource.xml.sax.ErrorHandlerImpl;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class Driver {
 
   public int doMain(String[] args) {
     ErrorHandlerImpl eh = new ErrorHandlerImpl(System.out);
-    OptionParser op = new OptionParser("itcdfe:p:sC:", args);
+    OptionParser op = new OptionParser("itcdfe:p:sC:P:", args);
     PropertyMapBuilder properties = new PropertyMapBuilder();
     properties.put(ValidateProperty.ERROR_HANDLER, eh);
     RngProperty.CHECK_ID_IDREF.add(properties);
@@ -100,6 +100,24 @@ public class Driver {
             }
             catch (OptionArgumentException e) {
               eh.print(localizer.message("invalid_phase", op.getOptionArg()));
+              return 2;
+            }
+          }
+          break;
+        case 'P':
+          {
+            if (sr == null)
+              sr = new AutoSchemaReader();
+            JSONObjectOption option = (JSONObjectOption)sr.getOption(SchemaReader.BASE_URI + "xslparams");
+            if (option == null) {
+              eh.print(localizer.message("no_schematron", op.getOptionCharString()));
+              return 2;
+            }
+            try {
+              properties.put(option.getPropertyId(), option.valueOf(op.getOptionArg()));
+            }
+            catch (OptionArgumentException e) {
+              eh.print(localizer.message("invalid_json_object", op.getOptionArg()));
               return 2;
             }
           }

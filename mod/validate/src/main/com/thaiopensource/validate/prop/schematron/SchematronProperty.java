@@ -4,6 +4,8 @@ import com.thaiopensource.validate.StringPropertyId;
 import com.thaiopensource.validate.FlagPropertyId;
 import com.thaiopensource.validate.Option;
 import com.thaiopensource.validate.FlagOption;
+import com.thaiopensource.validate.JSONObjectOption;
+import com.thaiopensource.validate.JSONObjectPropertyId;
 import com.thaiopensource.validate.StringOption;
 import com.thaiopensource.validate.OptionArgumentFormatException;
 import com.thaiopensource.validate.SchemaReader;
@@ -26,6 +28,7 @@ public class SchematronProperty {
       super(PHASE);
     }
 
+    @Override
     public String normalize(String value) throws OptionArgumentFormatException {
       value = value.trim();
       if (!value.equals("#ALL") && !Naming.isNcname(value))
@@ -35,6 +38,20 @@ public class SchematronProperty {
   }
 
   public static final StringOption PHASE_OPTION = new PhaseOption();
+  
+  /**
+   * PropertyId that specifies XSL parameters that must be supplied to the Schematron.
+   * This applies during schema creation.
+   */
+  public static final JSONObjectPropertyId XSLPARAMS = new JSONObjectPropertyId("XSLPARAMS");
+  
+  static public class XslParameters extends JSONObjectOption {
+    private XslParameters() {
+        super(XSLPARAMS);
+    }
+  }
+  
+  public static final JSONObjectOption XSL_PARAMETERS = new XslParameters();
 
   /**
    * PropertyId thats specifies that diagnostic messages should be included.
@@ -50,6 +67,8 @@ public class SchematronProperty {
       return new FlagOption(DIAGNOSE);
     if (uri.equals("phase"))
       return PHASE_OPTION;
+    if (uri.equals("xslparams"))
+      return XSL_PARAMETERS;
     return null;
   }
 }

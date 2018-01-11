@@ -291,6 +291,9 @@
     <java classname="{$class}"
 	  fork="yes"
 	  failonerror="yes">
+      <xsl:if test="@cmd-args">
+  <arg value="{@cmd-args}"/>
+      </xsl:if>
       <arg value="{$runtestdir}/out.log"/>
       <arg value="{$runtestdir}"/>
       <xsl:if test="@output">
@@ -306,6 +309,7 @@
 	</xsl:if>
 	<xsl:if test="$app = 'jing'">
 	  <pathelement location="${{lib.dir}}/xercesImpl${{xercesImpl-version}}.jar"/>
+	  <pathelement location="${{lib.dir}}/gson${{gson-version}}.jar"/>
 	</xsl:if>
       </classpath>
     </java>

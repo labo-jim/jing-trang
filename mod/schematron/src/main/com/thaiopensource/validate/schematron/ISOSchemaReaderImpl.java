@@ -25,7 +25,6 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
-
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Templates;
@@ -69,6 +68,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     ValidateProperty.RESOLVER,
     SchematronProperty.DIAGNOSE,
     SchematronProperty.PHASE,
+    SchematronProperty.XSLPARAMS,
   };
 
   ISOSchemaReaderImpl(SAXTransformerFactory transformerFactory, TransformerFactoryInitializer transformerFactoryInitializer)

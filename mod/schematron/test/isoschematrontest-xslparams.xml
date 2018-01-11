@@ -1,0 +1,28 @@
+<testSuite>
+<testCase>
+<correct>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt3" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:foo="foo://bar" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xsl:param name="foo:param1" select="'defaultValue'" as="xs:string"/>
+<xsl:param name="foo:param2" select="'defaultValue'" as="xs:string"/>
+<ns prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+<ns prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/>
+<ns prefix="foo" uri="foo://bar"/>
+<pattern id="Checks_att_value_same_as_param_value">
+<rule context="AAA">
+<assert test="@att1 = $foo:param1">@att1 expected value: valueParam1; current value: <xsl:value-of select="$foo:param1"/></assert>
+<assert test="@att2 = $foo:param2">@att2 expected value: valueParam2; current value: <xsl:value-of select="$foo:param1"/></assert>
+</rule>
+</pattern>
+</schema>
+</correct>
+<valid>
+<AAA att1="valueParam1" att2="valueParam2"/>
+</valid>
+<invalid>
+<AAA att1="defaultValue" att2="defaultValue"/>
+</invalid>
+<invalid>
+<AAA/>
+</invalid>
+</testCase>
+</testSuite>

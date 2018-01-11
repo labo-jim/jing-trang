@@ -3,6 +3,7 @@
   <depends module="resolver"/>
   <depends module="datatype"/>
   <depends lib="isorelax"/>
+  <depends lib="gson"/>
   <compile/>
   <service type="com.thaiopensource.validate.SchemaReaderFactory">
     <provider classname="com.thaiopensource.validate.jarv.JarvSchemaReaderFactory"/>

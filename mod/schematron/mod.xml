@@ -5,12 +5,16 @@
   <depends module="rng-validate"/>
   <depends lib="xalan"/>
   <depends lib="saxon"/>
+  <depends lib="gson"/>
   <test name="saxon-old-sch" in="mod/schematron/test/schematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
 	lib="saxon"/>
   <test name="saxon-iso-sch" in="mod/schematron/test/isoschematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
 	lib="saxon"/>
+  <test name="saxon-iso-sch-xslParams" in="mod/schematron/test/isoschematrontest-xslparams.xml"
+  type="validate" schema="test/schematrontest.nrl"
+  lib="saxon" cmd-args="-P:{'{foo://bar}param1':'valueParam1','{foo://bar}param2':'valueParam2'}"/>
   <test name="xalan" in="mod/schematron/test/schematrontest.xml"
 	type="validate" schema="test/schematrontest.nrl"
 	lib="xalan"/>

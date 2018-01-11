@@ -8,6 +8,10 @@ import com.thaiopensource.validate.ValidationDriver;
 import com.thaiopensource.validate.prop.rng.RngProperty;
 import com.thaiopensource.xml.sax.ErrorHandlerImpl;
 import com.thaiopensource.datatype.DatatypeLibraryLoader;
+import com.thaiopensource.validate.JSONObjectOption;
+import com.thaiopensource.validate.OptionArgumentException;
+import com.thaiopensource.validate.SchemaReader;
+import com.thaiopensource.validate.auto.AutoSchemaReader;
 import org.xml.sax.SAXException;
 
 import java.io.BufferedWriter;
@@ -29,7 +33,7 @@ class TestDriver {
   public int doMain(String[] args) throws IOException {
     long startTime = System.currentTimeMillis();
     eh = new ErrorHandlerImpl(System.out);
-    OptionParser op = new OptionParser("i", args);
+    OptionParser op = new OptionParser("iP:", args);
     PropertyMapBuilder properties = new PropertyMapBuilder();
     // This is an optimization.  It ensures that all SchemaReaders share a
     // single DatatypeLibraryLoader.
@@ -40,6 +44,11 @@ class TestDriver {
         case 'i':
           RngProperty.CHECK_ID_IDREF.add(properties);
           break;
+        case 'P':
+          SchemaReader sr = new AutoSchemaReader();
+          JSONObjectOption option = (JSONObjectOption)sr.getOption(SchemaReader.BASE_URI + "xslparams");
+          properties.put(option.getPropertyId(), option.valueOf(op.getOptionArg()));
+          break;
         }
       }
     }
@@ -49,6 +58,10 @@ class TestDriver {
     }
     catch (OptionParser.MissingArgumentException e) {
       eh.print(localizer.message("option_missing_argument", op.getOptionCharString()));
+      return 2;
+    }
+    catch (OptionArgumentException e) {
+      eh.print(localizer.message("option_invalid_argument", op.getOptionCharString()));
       return 2;
     }
     args = op.getRemainingArgs();
