@@ -214,7 +214,7 @@
   <replace file="${build.dir}/jing-bin/readme.html" token="@VERSION@" value="${version}"/>
   <zip zipfile="${build.dir}/dist/jing-${version}.zip">
     <zipfileset dir="${build.dir}" includes="jing.jar" prefix="jing-${version}/bin"/> 
-    <zipfileset dir="lib" includes="saxon.jar,isorelax.jar,xercesImpl.jar,xml-apis.jar" 
+    <zipfileset dir="lib" includes="saxon${saxon-version}.jar,isorelax${isorelax-version}.jar,xercesImpl${xercesImpl-version}.jar,xml-apis${xml-apis-version}.jar,gson${gson-version}.jar" 
                 prefix="jing-${version}/bin"/> 
     <zipfileset dir="${build.dir}/mod/jing"
 		includes="src.zip"
@@ -243,7 +243,7 @@
                 includes="copying.html"
                 prefix="jing-${version}/doc"/>
     <zipfileset dir="lib"
-                includes="xerces.copying.txt,isorelax.copying.txt"
+                includes="xerces.copying.txt,isorelax.copying.txt,gson.copying.txt"
                 prefix="jing-${version}/doc"/>
     <zipfileset dir="${build.dir}/jing-bin"
                 includes="readme.html"

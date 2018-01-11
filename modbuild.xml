@@ -791,6 +791,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -822,6 +823,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -853,6 +855,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1042,6 +1045,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1682,6 +1686,7 @@
             <pathelement location="${build.dir}/mod/validate/classes/main"/>
             <pathelement location="${lib.dir}/ant${ant-version}.jar"/>
             <pathelement location="${lib.dir}/resolver${resolver-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/rng-validate/classes/main">
@@ -1739,6 +1744,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1802,6 +1808,7 @@
             <pathelement location="${build.dir}/mod/rng-validate/classes/main"/>
             <pathelement location="${lib.dir}/xalan${xalan-version}.jar"/>
             <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/schematron/classes/main">
@@ -1836,7 +1843,7 @@
       </zip>
    </target>
    <target name="mod.schematron.test"
-           depends="dummy,mod.schematron.test-saxon-old-sch,mod.schematron.test-saxon-iso-sch,mod.schematron.test-xalan,mod.schematron.test-jaxp"/>
+           depends="dummy,mod.schematron.test-saxon-old-sch,mod.schematron.test-saxon-iso-sch,mod.schematron.test-saxon-iso-sch-xslParams,mod.schematron.test-xalan,mod.schematron.test-jaxp"/>
    <target name="mod.schematron.test-saxon-old-sch"
            depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-old-sch">
       <java classname="com.thaiopensource.relaxng.util.TestDriver"
@@ -1848,6 +1855,7 @@
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1881,6 +1889,7 @@
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1903,6 +1912,42 @@
                 targetfile="${build.dir}/mod/schematron/test-saxon-iso-sch/stamp"
                 srcfile="mod/schematron/test/isoschematrontest.xml"/>
    </target>
+   <target name="mod.schematron.test-saxon-iso-sch-xslParams"
+           depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-saxon-iso-sch-xslParams">
+      <java classname="com.thaiopensource.relaxng.util.TestDriver"
+            fork="yes"
+            failonerror="yes">
+         <arg value="-P:{'{foo://bar}param1':'valueParam1','{foo://bar}param2':'valueParam2'}"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams/out.log"/>
+         <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams"/>
+         <classpath>
+            <pathelement location="${build.dir}/jing.jar"/>
+            <pathelement location="${lib.dir}/saxon${saxon-version}.jar"/>
+            <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
+         </classpath>
+      </java>
+   </target>
+   <target name="mod.schematron.split-saxon-iso-sch-xslParams"
+           depends="mod.schematron.uptodate-split-saxon-iso-sch-xslParams,jing-jar"
+           unless="mod.schematron.uptodate-split-saxon-iso-sch-xslParams">
+      <jing rngfile="test/schematrontest.nrl"
+            file="mod/schematron/test/isoschematrontest-xslparams.xml"/>
+      <delete dir="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams"/>
+      <mkdir dir="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams"/>
+      <xslt style="test/split.xsl"
+            out="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams/stamp"
+            in="mod/schematron/test/isoschematrontest-xslparams.xml">
+         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+         <param name="dir"
+                expression="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams"/>
+      </xslt>
+   </target>
+   <target name="mod.schematron.uptodate-split-saxon-iso-sch-xslParams">
+      <uptodate property="mod.schematron.uptodate-split-saxon-iso-sch-xslParams"
+                targetfile="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams/stamp"
+                srcfile="mod/schematron/test/isoschematrontest-xslparams.xml"/>
+   </target>
    <target name="mod.schematron.test-xalan"
            depends="mod.schematron.compile-test,mod.jing.jar,mod.schematron.split-xalan">
       <java classname="com.thaiopensource.relaxng.util.TestDriver"
@@ -1915,6 +1960,7 @@
             <pathelement location="${lib.dir}/xalan${xalan-version}.jar"/>
             <pathelement location="${lib.dir}/serializer${serializer-version}.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -1947,6 +1993,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>
@@ -2165,6 +2212,7 @@
             <pathelement location="${build.dir}/mod/resolver/classes/main"/>
             <pathelement location="${build.dir}/mod/datatype/classes/main"/>
             <pathelement location="${lib.dir}/isorelax${isorelax-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </javac>
       <copy todir="${build.dir}/mod/validate/classes/main">
@@ -2333,6 +2381,7 @@
          <classpath>
             <pathelement location="${build.dir}/jing.jar"/>
             <pathelement location="${lib.dir}/xercesImpl${xercesImpl-version}.jar"/>
+            <pathelement location="${lib.dir}/gson${gson-version}.jar"/>
          </classpath>
       </java>
    </target>

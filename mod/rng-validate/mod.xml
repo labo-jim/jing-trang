@@ -8,6 +8,7 @@
   <depends module="validate"/>
   <depends lib="ant"/>
   <depends lib="resolver"/>
+  <depends lib="gson"/>
   <test name="spec" type="validate" schema="eg/testSuite.rng"/>
   <compile/>
   <version package="com/thaiopensource/relaxng/util"/>
