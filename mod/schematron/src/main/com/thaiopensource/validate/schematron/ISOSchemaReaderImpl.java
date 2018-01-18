@@ -1,5 +1,8 @@
 package com.thaiopensource.validate.schematron;
 
+import com.thaiopensource.resolver.Resolver;
+import com.thaiopensource.resolver.xml.sax.SAXResolver;
+import com.thaiopensource.resolver.xml.transform.Transform;
 import com.thaiopensource.util.Localizer;
 import com.thaiopensource.util.PropertyId;
 import com.thaiopensource.util.PropertyMap;
@@ -68,7 +71,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     ValidateProperty.RESOLVER,
     SchematronProperty.DIAGNOSE,
     SchematronProperty.PHASE,
-    SchematronProperty.XSLPARAMS,
+    SchematronProperty.XSLPARAMS
   };
 
   ISOSchemaReaderImpl(SAXTransformerFactory transformerFactory, TransformerFactoryInitializer transformerFactoryInitializer)
@@ -85,7 +88,6 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     // XSL for include resolution
     final String resolveIncludeResourceName = fullResourceName(RESOLVE_INCLUDE_STYLESHEET);
     final StreamSource resolveIncludeSource = new StreamSource(getResourceAsStream(resolveIncludeResourceName));
-    initTransformerFactory(transformerFactory);
     resolveInclude = transformerFactory.newTemplates(resolveIncludeSource);
     InputSource schemaSource = new InputSource(getResourceAsStream(fullResourceName(SCHEMATRON_SCHEMA)));
     PropertyMapBuilder builder = new PropertyMapBuilder();
@@ -351,7 +353,12 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     IfValidHandler ifValidHandler = new IfValidHandler();
     ifValidHandler.setErrorHandler(ceh);
     try {
-      SAXTransformerFactory factory = (SAXTransformerFactory)transformerFactoryClass.newInstance();
+      SAXTransformerFactory factory = (SAXTransformerFactory) transformerFactoryClass.newInstance();
+      // Sets an URI Resolver
+      SAXResolver saxResolver = ResolverFactory.createResolver(properties);
+      Resolver resolver = saxResolver.getResolver();
+      factory.setURIResolver(Transform.createSAXURIResolver(resolver));
+      // Initiates the factory
       initTransformerFactory(factory);
       TransformerHandler includeTransformerHandler = factory.newTransformerHandler(resolveInclude);
       TransformerHandler transformerHandler = factory.newTransformerHandler(schematron);
@@ -367,11 +374,12 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
       builder.put(ValidateProperty.ERROR_HANDLER, ifValidHandler);
       Validator validator = schematronSchema.createValidator(builder.toPropertyMap());
       ifValidHandler.setValidator(validator.getContentHandler());
+      // Gets the XML reader
       XMLReader xr = source.getXMLReader();
       if (xr == null)
-        xr = ResolverFactory.createResolver(properties).createXMLReader();
+        xr = saxResolver.createXMLReader();
       // Resolve includes before validating the Schematron file
-      xr.setContentHandler(includeTransformerHandler);      
+      xr.setContentHandler(includeTransformerHandler);
       includeTransformerHandler.setResult(new SAXResult(ifValidHandler));
       xr.setDTDHandler(validator.getDTDHandler());  // not strictly necessary
       factory.setErrorListener(new SAXErrorListener(ceh, systemId));

@@ -137,7 +137,7 @@
   <!-- ================================================================================== -->
   <!-- Output only the selected schema -->
   <xsl:template match="iso:schema" mode="iso-sch-abs">
-    <xsl:copy>
+    <xsl:copy copy-namespaces="no">
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates mode="iae:go"/>
     </xsl:copy>
@@ -198,7 +198,7 @@
 
   <!-- output everything else unchanged -->
   <xsl:template match="*" priority="-1" mode="iae:go">
-    <xsl:copy>
+    <xsl:copy copy-namespaces="no">
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates mode="iae:go"/>
     </xsl:copy>
@@ -254,7 +254,7 @@
     <xsl:param name="caller"/>
     <xsl:param name="is-a"/>
     <xsl:for-each select="//iso:pattern[@id = $is-a]">
-      <xsl:copy>
+      <xsl:copy copy-namespaces="no">
 
         <xsl:choose>
           <xsl:when test="string-length($caller) = 0">
@@ -283,7 +283,7 @@
   <!-- Generate a non-abstract pattern -->
   <xsl:template mode="iae:do-pattern" match="*">
     <xsl:param name="caller"/>
-    <xsl:copy>
+    <xsl:copy copy-namespaces="no">
       <xsl:for-each select="@*[name() = 'test' or name() = 'context' or name() = 'select']">
         <xsl:attribute name="{name()}">
           <xsl:call-template name="iae:macro-expand">
@@ -417,7 +417,7 @@
     <xsl:param name="see"/> <!-- Not used -->
     <xsl:param name="space"/> <!-- Not used -->
     <result>
-      <xsl:copy-of select="$contents"/>
+      <xsl:copy-of select="$contents" copy-namespaces="no"/>
     </result>
   </xsl:template>
 
@@ -1144,13 +1144,16 @@ THE SOFTWARE.
    for ZIP archives.
 	-->
 
+    <!-- [XSL INCLUSION PATCH] [20180112] xsl:import / xsl:include declarations copy -->
+    <xsl:apply-templates mode="do-xsl-imports-includes" select="xsl:import | xsl:include"/>
+    
     <xsl:call-template name="iso:exslt.add.imports"/>
+    
     <!-- RJ moved report BH -->
     <axsl:param name="archiveDirParameter"/>
     <axsl:param name="archiveNameParameter"/>
     <axsl:param name="fileNameParameter"/>
     <axsl:param name="fileDirParameter"/>
-
 
     <axsl:variable name="document-uri">
       <axsl:value-of select="document-uri(/)"/>
@@ -1201,7 +1204,7 @@ THE SOFTWARE.
       </xsl:when>
     </xsl:choose>
   </xsl:template>
-
+  
   <xsl:template name="handle-phase">
     <!-- This just tests that the phase exists -->
     <xsl:if test="not(normalize-space($phase) = '#ALL')">
@@ -1773,7 +1776,7 @@ THE SOFTWARE.
         </xsl:call-template>
       </xsl:message>
     </xsl:if>
-    <xsl:copy-of select="."/>
+    <xsl:copy-of select="." copy-namespaces="no"/>
   </xsl:template>
 
   <xsl:template mode="iso-sch-ske" match="xsl:function"/>
@@ -1925,7 +1928,7 @@ THE SOFTWARE.
   <xsl:template match="xsl:import-schema" mode="do-types">
     <xsl:choose>
       <xsl:when test="ancestor::iso:schema[@queryBinding = ('xslt2', 'xslt3')]">
-        <xsl:copy-of select="."/>
+        <xsl:copy-of select="." copy-namespaces="no"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:message>
@@ -1947,6 +1950,28 @@ THE SOFTWARE.
       </xsl:call-template>
     </xsl:message>
   </xsl:template>
+  
+  
+  <!-- [XSL INCLUSION PATCH] [20180112] xsl:import / xsl:include declarations copy -->
+  
+  <xsl:template match="xsl:import | xsl:include" mode="do-xsl-imports-includes">
+    <xsl:choose>
+      <xsl:when test="ancestor::iso:schema[@queryBinding = ('xslt2', 'xslt3')]">
+        <xsl:copy-of select="." copy-namespaces="no"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>
+          <xsl:call-template name="outputLocalizedMessage">
+            <xsl:with-param name="number">40</xsl:with-param>
+          </xsl:call-template>
+        </xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <!-- swallow -->
+  <xsl:template mode="iso-sch-ske" match="xsl:import | xsl:include"/>
+
 
   <!-- ISO LET -->
   <xsl:template mode="iso-sch-ske" match="iso:let">
@@ -1982,7 +2007,7 @@ THE SOFTWARE.
           </xsl:when>
           <xsl:otherwise>
             <axsl:variable name="{@name}">
-              <xsl:copy-of select="child::node()"/>
+              <xsl:copy-of select="child::node()" copy-namespaces="no"/>
             </axsl:variable>
           </xsl:otherwise>
         </xsl:choose>
@@ -1995,7 +2020,7 @@ THE SOFTWARE.
           </xsl:when>
           <xsl:otherwise>
             <axsl:variable name="{@name}">
-              <xsl:copy-of select="child::node()"/>
+              <xsl:copy-of select="child::node()" copy-namespaces="no"/>
             </axsl:variable>
           </xsl:otherwise>
         </xsl:choose>
@@ -2566,7 +2591,7 @@ THE SOFTWARE.
         <xsl:variable name="p" select="@prefix"/>
         <xsl:copy-of select="
             exsl:node-set($ns-dummy-elements)
-            /*/namespace::*[local-name() = $p]"/>
+            /*/namespace::*[local-name() = $p]" copy-namespaces="no"/>
       </xsl:when>
 
       <!-- end XSLT2 code -->
@@ -2636,7 +2661,7 @@ THE SOFTWARE.
         </xsl:message>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:copy-of select="."/>
+        <xsl:copy-of select="." copy-namespaces="no"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -2644,7 +2669,7 @@ THE SOFTWARE.
   <xsl:template match="iso:*" mode="text" priority="-2"/>
   <xsl:template match="*" mode="text" priority="-3">
     <xsl:if test="not($allow-foreign = 'false')">
-      <xsl:copy-of select="."/>
+      <xsl:copy-of select="." copy-namespaces="no"/>
     </xsl:if>
   </xsl:template>
 
@@ -2674,7 +2699,7 @@ THE SOFTWARE.
     <xsl:param name="see"/>
     <xsl:param name="space"/>
 
-    <xsl:copy-of select="$contents"/>
+    <xsl:copy-of select="$contents" copy-namespaces="no"/>
   </xsl:template>
 
   <xsl:template name="process-assert">
@@ -3016,6 +3041,8 @@ THE SOFTWARE.
     <xhtml:p id="sch-message-38b"/>
     <xhtml:p id="sch-message-39a">Warning: unrecognized element </xhtml:p>
     <xhtml:p id="sch-message-39b"/>
+    <!-- [XSL INCLUSION PATCH] [20180112] xsl:import / xsl:include declarations copy -->
+    <xhtml:p id="sch-message-40">Schema error: XSL stylesheets may only be imported / included if you are using the 'xslt2' or 'xslt3' query language bindings</xhtml:p>
   </xhtml:div>
 
 </xsl:stylesheet>
