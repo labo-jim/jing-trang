@@ -1917,7 +1917,7 @@
       <java classname="com.thaiopensource.relaxng.util.TestDriver"
             fork="yes"
             failonerror="yes">
-         <arg value="-P:{'{foo://bar}param1':'valueParam1','{foo://bar}param2':'valueParam2'}"/>
+         <arg value="-P {'{foo://bar}param1':'valueParam1','{foo://bar}param2':'valueParam2'}"/>
          <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams/out.log"/>
          <arg value="${build.dir}/mod/schematron/test-saxon-iso-sch-xslParams"/>
          <classpath>

@@ -27,6 +27,10 @@ public class Xslt3SaxonSchemaReaderFactory extends NewSaxonSchemaReaderFactory {
         super.initTransformerFactory(factory);
         try {
             SaxonTransformerFactory saxonFactory = (SaxonTransformerFactory) factory;
+            // Inherits the URIResolver from the TransformerFactory factory, which can be a CatalogResolver if the -C command-line option is specified
+            saxonFactory.setURIResolver(factory.getURIResolver());
+            //DEBUG
+            //factory.setAttribute(FeatureKeys.TRACE_EXTERNAL_FUNCTIONS, true);
             // Ensures that at least a PE license is available before switching on XSLT 3.0 feature
             // From Saxon 9.8, an XSLT 3.0 processor is always used by default, so we can leave the "2.0" set by super.initTransformerFactory(factory) when HE edition is used
             Boolean isSaxonLicensed = saxonFactory.getConfiguration().isLicensedFeature(Configuration.LicenseFeature.PROFESSIONAL_EDITION);

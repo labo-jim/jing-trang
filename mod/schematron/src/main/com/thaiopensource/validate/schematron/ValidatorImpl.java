@@ -60,7 +60,7 @@ class ValidatorImpl implements Validator {
       // doesn't seem to work too well.
       if (!SchemaReaderImpl.isXsltc(factory.getClass()))
         transformer.setURIResolver(Transform.createSAXURIResolver(resolver));
-      // Supplies command-line parameters to the XSL compiled Schematron (-P: command line argument)
+      // Supplies command-line parameters to the XSL compiled Schematron (-P command line argument)
       JsonObject xslParameters = properties.get(SchematronProperty.XSLPARAMS);
       if (xslParameters != null) {
         Set<Map.Entry<String,JsonElement>> xslParams = xslParameters.entrySet();

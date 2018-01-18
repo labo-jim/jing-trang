@@ -18,11 +18,11 @@ public class JSONObjectOption implements Option {
 
   @Override
   public JsonObject valueOf(String arg) throws OptionArgumentException {
-    if (arg == null || arg == "") {
+    if (arg == null || arg.trim() == "") {
       return defaultValue();
     }
     else {
-      return parse(arg.substring(1));
+      return parse(arg);
     }
   }
 
