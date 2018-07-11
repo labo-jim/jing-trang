@@ -47,8 +47,15 @@ public class BasicResolver implements Resolver {
       URI uri = new URI(uriRef);
       if (!uri.isAbsolute()) {
         String base = id.getBase();
-        if (base != null)
-            return new URI(base).resolve(uri).toString();
+        if (base != null) {
+          URI baseURI = new URI(base);
+          if (baseURI.isOpaque() && "jar".equals(baseURI.getScheme())) {
+            return baseURI.getScheme() +":" + resolveUri(new Identifier(id.getUriReference(), baseURI.getSchemeSpecificPart()));
+          } else {
+            URI res = baseURI.resolve(uri);
+            return res.toString();
+      	  }
+        }
       }
       return uriRef;
     }
