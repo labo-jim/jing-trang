@@ -17,6 +17,11 @@ public class SchemaReaderSchemaReceiver implements SchemaReceiver {
   public SchemaReaderSchemaReceiver(SchemaReader schemaLanguage, PropertyMap properties) {
     this.schemaLanguage = schemaLanguage;
     this.properties = properties;
+    System.out.println("JIM in da place !");
+    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+    for (StackTraceElement trace : stackTrace) {
+		System.out.println("JIM" + trace);
+	}
   }
 
   public SchemaFuture installHandlers(XMLReader xr) throws SAXException {

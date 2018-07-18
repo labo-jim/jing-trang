@@ -15,17 +15,23 @@ import com.thaiopensource.validate.StringOption;
 import com.thaiopensource.validate.ValidateProperty;
 import com.thaiopensource.validate.ValidationDriver;
 import com.thaiopensource.validate.auto.AutoSchemaReader;
+import com.thaiopensource.validate.auto.SchemaReceiverLoader;
 import com.thaiopensource.validate.prop.rng.RngProperty;
 import com.thaiopensource.validate.rng.CompactSchemaReader;
 import com.thaiopensource.xml.sax.ErrorHandlerImpl;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Driver {
   static private String usageKey = "usage";
+  
+  // JIM
+  public static final String JIM = "[\033[34mJIM\033[0m] ";
 
   static public void setUsageKey(String key) {
     usageKey = key;
@@ -153,6 +159,22 @@ public class Driver {
     long startTime = System.currentTimeMillis();
     long loadedPatternTime = -1;
     boolean hadError = false;
+    
+    // JIM
+    System.out.println(JIM + "Le Schema Reader créé par jing (enfin presque...)");
+    if (sr == null) sr = new AutoSchemaReader(); // enfin presque...
+    printClass(sr);
+    
+    String schNS15 = "http://www.ascc.net/xml/schematron";
+    String schNSISO = "http://purl.oclc.org/dsdl/schematron";
+    String rngNS = "http://relaxng.org/ns/structure/1.0";
+    System.out.println(JIM + "SchemaReceiverLoader avec le NS de chematron 15");
+    printClass(new SchemaReceiverLoader().createSchemaReceiver(schNS15, properties.toPropertyMap()));
+    System.out.println(JIM + "SchemaReceiverLoader avec le NS de chematron ISO");
+    printClass(new SchemaReceiverLoader().createSchemaReceiver(schNSISO, properties.toPropertyMap()));
+    System.out.println(JIM + "SchemaReceiverLoader avec le NS de RNG");
+    printClass(new SchemaReceiverLoader().createSchemaReceiver(rngNS, properties.toPropertyMap()));
+    
     try {
       ValidationDriver driver = new ValidationDriver(properties.toPropertyMap(), sr);
       InputSource in = ValidationDriver.uriOrFileInputSource(args[0]);
@@ -199,6 +221,14 @@ public class Driver {
     if (hadError)
       return 1;
     return 0;
+  }
+  
+  // JIM
+  private void printClass(Object o){
+	  printClass(o, System.out);
+  }
+  private void printClass(Object o, PrintStream out){
+	  out.println(o.getClass().getName());
   }
 
 }
